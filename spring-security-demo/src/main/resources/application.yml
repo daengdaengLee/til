@@ -1,0 +1,7 @@
+spring:
+  security:
+    user:
+      name: "admin"
+      password: "$2a$10$8q2qyPGGC5d6DPfmGTpUsO7R.t6YZXZbXPWn5MQ2WXvgoIwioVhSO" # 1234
+      roles:
+        - "ADMIN"
