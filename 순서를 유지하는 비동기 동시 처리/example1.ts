@@ -3,7 +3,7 @@ import { EventEmitter } from "node:events";
 type Task<T> = { done: false } | { done: true; value: T };
 type TaskWrapper<T> = { task: Task<T> };
 
-export function example1<TInput, TOutput>(params: {
+export function run<TInput, TOutput>(params: {
   source: EventEmitter;
   f: (value: TInput) => Promise<TOutput>;
 }): EventEmitter {

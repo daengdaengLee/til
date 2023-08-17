@@ -1,6 +1,6 @@
 import { EventEmitter } from "node:events";
 import { delay } from "./delay";
-import { example1 } from "./example1";
+import { run } from "./example1";
 
 const data = [1, 2, 3, 4, 5];
 const expected = [`1`, `2`, `3`, `4`, `5`];
@@ -13,7 +13,7 @@ const f = async (value: number): Promise<string> => {
 describe(`Example 1`, () => {
   it(`Keep the original sequence.`, async () => {
     const source = new EventEmitter();
-    const destination = example1({ source: source, f: f });
+    const destination = run({ source: source, f: f });
     const output: Array<string> = [];
     const handler = (value: string): void => {
       output.push(value);
@@ -37,7 +37,7 @@ describe(`Example 1`, () => {
 
   it(`Run concurrently`, async () => {
     const source = new EventEmitter();
-    const destination = example1({ source: source, f: f });
+    const destination = run({ source: source, f: f });
     const done = new Promise<void>((resolve) => {
       destination.once(`close`, () => {
         resolve();
