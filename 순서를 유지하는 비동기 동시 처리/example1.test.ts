@@ -35,7 +35,7 @@ describe(`Example 1`, () => {
     expect(output).toEqual(expected);
   });
 
-  it(`Run concurrently`, async () => {
+  it(`Run concurrently.`, async () => {
     const source = new EventEmitter();
     const destination = run({ source: source, f: f });
     const done = new Promise<void>((resolve) => {
