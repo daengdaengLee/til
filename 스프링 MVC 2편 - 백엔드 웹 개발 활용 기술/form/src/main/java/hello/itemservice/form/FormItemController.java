@@ -55,6 +55,8 @@ public class FormItemController {
 
     @PostMapping("/{itemId}/edit")
     public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+        log.info("item={}", item);
+
         itemRepository.update(itemId, item);
         return "redirect:/form/items/{itemId}";
     }
