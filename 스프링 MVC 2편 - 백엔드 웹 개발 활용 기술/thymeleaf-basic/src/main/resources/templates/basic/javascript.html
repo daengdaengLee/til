@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<!-- 자바스크립트 인라인 사용 전 -->
+<script>
+    const username = [[${user.username}]];
+    // const username = "[[${user.username}]]"; 자바스크립트 인라인 사용하지 않으면 이렇게 챙겨줘야 함
+    const age = [[${user.age}]];
+
+    //자바스크립트 내추럴 템플릿
+    const username2 = /*[[${user.username}]]*/ "test username";
+
+    //객체
+    const user = [[${user}]];
+</script>
+
+<!-- 자바스크립트 인라인 사용 후 -->
+<script th:inline="javascript">
+    const username = [[${user.username}]];
+    const age = [[${user.age}]];
+
+    //자바스크립트 내추럴 템플릿
+    const username2 = /*[[${user.username}]]*/ "test username";
+
+    //객체
+    const user = [[${user}]];
+</script>
+
+<!-- 자바스크립트 인라인 each -->
+<script th:inline="javascript">
+    [# th:each = "user, stat : ${users}"]
+    const user[[${stat.count}]] = [[${user}]];
+    [/]
+</script>
+
+
+</body>
+</html>
