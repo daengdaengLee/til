@@ -18,7 +18,7 @@ public class HomeController {
     private final MemberRepository memberRepository;
     private final SessionManager sessionManager;
 
-    @GetMapping("/_")
+    @GetMapping("/_v1")
     public String loginHomeV1(
             @CookieValue(name = "memberId", required = false) Long memberId,
             Model model) {
@@ -35,7 +35,7 @@ public class HomeController {
         return "loginHome";
     }
 
-    @GetMapping("/")
+    @GetMapping("/_v2")
     public String loginHomeV2(
             HttpServletRequest request,
             Model model) {
@@ -47,6 +47,27 @@ public class HomeController {
         }
 
         model.addAttribute("member", member);
+        return "loginHome";
+    }
+
+    @GetMapping("/")
+    public String loginHomeV3(
+            HttpServletRequest request,
+            Model model) {
+        var session = request.getSession(false);
+        if (session == null) {
+            return "home";
+        }
+
+        var loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+
+        // 세션에 회원 데이터가 없으면 home
+        if (loginMember == null) {
+            return "home";
+        }
+
+        // 세션이 유지되면 로그인으로 이동
+        model.addAttribute("member", loginMember);
         return "loginHome";
     }
 }

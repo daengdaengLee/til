@@ -1,6 +1,7 @@
 package hello.login.web.login;
 
 import hello.login.domain.login.LoginService;
+import hello.login.web.SessionConst;
 import hello.login.web.session.SessionManager;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -52,7 +53,7 @@ public class LoginController {
         return "redirect:/";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login/v2")
     public String loginV2(
             @Valid @ModelAttribute LoginForm form,
             BindingResult bindingResult,
@@ -78,15 +79,52 @@ public class LoginController {
         return "redirect:/";
     }
 
+    @PostMapping("/login")
+    public String loginV3(
+            @Valid @ModelAttribute LoginForm form,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "login/loginForm";
+        }
+
+        var loginMember = loginService.login(form.getLoginId(), form.getPassword());
+
+        if (loginMember == null) {
+            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
+            log.info("errors={}", bindingResult);
+            return "login/loginForm";
+        }
+
+        // 로그인 성공 처리
+
+        // 세션이 있으면 있는 세션 반환, 없으면 신규 세션을 생성
+        var session = request.getSession();
+        // 세션에 로그인 회원 정보 보관
+        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
+
+        return "redirect:/";
+    }
+
     @PostMapping("/logout/v1")
     public String logoutV1(HttpServletResponse response) {
         this.expireCookie(response, "memberId");
         return "redirect:/";
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/logout/v2")
     public String logoutV2(HttpServletRequest request) {
         this.sessionManager.expire(request);
+        return "redirect:/";
+    }
+
+    @PostMapping("/logout")
+    public String logoutV3(HttpServletRequest request) {
+        var session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
         return "redirect:/";
     }
 
