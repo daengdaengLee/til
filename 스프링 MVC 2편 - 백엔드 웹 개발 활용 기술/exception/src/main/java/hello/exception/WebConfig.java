@@ -4,7 +4,6 @@ import hello.exception.filter.LogFilter;
 import hello.exception.interceptor.LogInterceptor;
 import jakarta.servlet.DispatcherType;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -19,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/css/**", "*.ico", "/error", "/error-page/**"); // 오류 페이지 경로 exclude
     }
 
-    @Bean
+    //    @Bean
     public FilterRegistrationBean<LogFilter> logFilter() {
         var filterRegistrationBean = new FilterRegistrationBean<LogFilter>();
         filterRegistrationBean.setFilter(new LogFilter());
