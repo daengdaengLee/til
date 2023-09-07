@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form th:object="${form}" th:method="post">
+    <label>
+        <span>number</span>
+        <input type="text" th:field="*{number}">
+    </label>
+
+    <br/>
+
+    <label>
+        <span>localDateTime</span>
+        <input type="text" th:field="*{localDateTime}">
+    </label>
+
+    <br/>
+
+    <input type="submit"/>
+</form>
+
+</body>
+</html>
