@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form th:object="${form}" th:method="post">
+    <label>
+        <span>th:field </span>
+        <input type="text" th:field="*{ipPort}">
+    </label>
+
+    <br/>
+
+    <label>
+        <span>th:value</span>
+        <input type="text" th:value="*{ipPort}">
+    </label>
+    <span>(보여주기 용도)</span>
+
+    <br/>
+
+    <input type="submit"/>
+</form>
+
+</body>
+</html>
