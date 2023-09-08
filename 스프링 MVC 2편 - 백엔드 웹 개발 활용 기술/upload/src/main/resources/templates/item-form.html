@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>상품 등록</h2>
+    </div>
+
+    <form th:action method="post" enctype="multipart/form-data">
+        <ul>
+            <li>
+                <label>
+                    <span>상품명</span>
+                    <input type="text" name="itemName">
+                </label>
+            </li>
+            <li>
+                <label>
+                    <span>첨부파일</span>
+                    <input type="file" name="attachFile">
+                </label>
+            </li>
+            <li>
+                <label>
+                    <span>이미지 파일들</span>
+                    <input type="file" multiple="multiple" name="imageFiles">
+                </label>
+            </li>
+        </ul>
+        <input type="submit"/>
+    </form>
+</div> <!-- /container -->
+
+</body>
+</html>
