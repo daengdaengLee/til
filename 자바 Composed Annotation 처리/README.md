@@ -1,4 +1,4 @@
-# 자바 Combined Annotation 처리
+# 자바 Composed Annotation 처리
 
 - 어노테이션에 달린 어노테이션을 처리하는 방법을 설명하는 예제입니다.
 - [관련 포스팅]()에서 자세한 설명을 볼 수 있습니다.
