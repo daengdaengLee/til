@@ -1,16 +1,28 @@
 package hello.jdbc.exception.basic;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@Slf4j
 public class UncheckedAppTest {
     @Test
     void unchecked_controller() {
         var controller = new Controller();
         assertThatThrownBy(controller::request).isInstanceOf(Exception.class);
+    }
+
+    @Test
+    void printEx() {
+        var controller = new Controller();
+        try {
+            controller.request();
+        } catch (Exception e) {
+            log.info("ex", e);
+        }
     }
 
     static class Controller {
