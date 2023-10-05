@@ -10,7 +10,6 @@ import org.springframework.context.event.EventListener;
 @Slf4j
 @RequiredArgsConstructor
 public class TestDataInit {
-
     private final ItemRepository itemRepository;
 
     /**
@@ -19,8 +18,7 @@ public class TestDataInit {
     @EventListener(ApplicationReadyEvent.class)
     public void initData() {
         log.info("test data init");
-        itemRepository.save(new Item("itemA", 10000, 10));
-        itemRepository.save(new Item("itemB", 20000, 20));
+        this.itemRepository.save(new Item("itemA", 10000, 10));
+        this.itemRepository.save(new Item("itemB", 20000, 20));
     }
-
 }
