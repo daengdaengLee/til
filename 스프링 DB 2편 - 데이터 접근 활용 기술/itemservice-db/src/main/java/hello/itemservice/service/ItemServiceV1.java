@@ -13,26 +13,25 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ItemServiceV1 implements ItemService {
-
     private final ItemRepository itemRepository;
 
     @Override
     public Item save(Item item) {
-        return itemRepository.save(item);
+        return this.itemRepository.save(item);
     }
 
     @Override
     public void update(Long itemId, ItemUpdateDto updateParam) {
-        itemRepository.update(itemId, updateParam);
+        this.itemRepository.update(itemId, updateParam);
     }
 
     @Override
     public Optional<Item> findById(Long id) {
-        return itemRepository.findById(id);
+        return this.itemRepository.findById(id);
     }
 
     @Override
     public List<Item> findItems(ItemSearchCond cond) {
-        return itemRepository.findAll(cond);
+        return this.itemRepository.findAll(cond);
     }
 }
