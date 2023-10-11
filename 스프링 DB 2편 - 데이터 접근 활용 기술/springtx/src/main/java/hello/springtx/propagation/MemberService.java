@@ -53,6 +53,7 @@ public class MemberService {
         log.info("=== LogRepository 호출 종료 ===");
     }
 
+    @Transactional
     public void joinV2(String username) {
         var member = new Member(username);
         var logMessage = new Log(username);
