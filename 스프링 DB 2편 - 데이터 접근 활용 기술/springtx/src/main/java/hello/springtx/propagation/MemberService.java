@@ -71,4 +71,23 @@ public class MemberService {
         }
         log.info("=== LogRepository 호출 종료 ===");
     }
+
+    @Transactional
+    public void joinV2_(String username) {
+        var member = new Member(username);
+        var logMessage = new Log(username);
+
+        log.info("=== MemberRepository 호출 시작 ===");
+        this.memberRepository.save(member);
+        log.info("=== MemberRepository 호출 종료 ===");
+
+        log.info("=== LogRepository 호출 시작 ===");
+        try {
+            this.logRepository.save__(logMessage);
+        } catch (RuntimeException e) {
+            log.info("log 저장에 실패했습니다. logMessage = {}", logMessage.getMessage());
+            log.info("정상 흐름 반환");
+        }
+        log.info("=== LogRepository 호출 종료 ===");
+    }
 }

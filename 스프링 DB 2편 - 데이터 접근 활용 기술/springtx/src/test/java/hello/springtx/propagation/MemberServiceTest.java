@@ -129,4 +129,22 @@ class MemberServiceTest {
         assertThat(this.memberRepository.find(username).isEmpty()).isTrue();
         assertThat(this.logRepository.find(username).isEmpty()).isTrue();
     }
+
+    /**
+     * MemberService    @Transactional:ON
+     * MemberRepository @Transactional:ON
+     * LogRepository    @Transactional:ON(REQUIRES_NEW) Exception
+     */
+    @Test
+    void recoverException_success() {
+        // given
+        var username = "로그예외_recoverException_success";
+
+        // when
+        this.memberService.joinV2_(username);
+
+        // then : member 저장, log 롤백
+        assertThat(this.memberRepository.find(username).isPresent()).isTrue();
+        assertThat(this.logRepository.find(username).isEmpty()).isTrue();
+    }
 }
