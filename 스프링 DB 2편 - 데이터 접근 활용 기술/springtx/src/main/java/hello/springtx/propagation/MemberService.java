@@ -39,6 +39,20 @@ public class MemberService {
         log.info("=== LogRepository 호출 종료 ===");
     }
 
+    @Transactional
+    public void joinV1__(String username) {
+        var member = new Member(username);
+        var logMessage = new Log(username);
+
+        log.info("=== MemberRepository 호출 시작 ===");
+        this.memberRepository.save(member);
+        log.info("=== MemberRepository 호출 종료 ===");
+
+        log.info("=== LogRepository 호출 시작 ===");
+        this.logRepository.save(logMessage);
+        log.info("=== LogRepository 호출 종료 ===");
+    }
+
     public void joinV2(String username) {
         var member = new Member(username);
         var logMessage = new Log(username);

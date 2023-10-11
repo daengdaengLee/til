@@ -72,4 +72,22 @@ class MemberServiceTest {
         assertThat(this.memberRepository.find(username).isPresent()).isTrue();
         assertThat(this.logRepository.find(username).isPresent()).isTrue();
     }
+
+    /**
+     * MemberService    @Transactional:ON
+     * MemberRepository @Transactional:ON
+     * LogRepository    @Transactional:ON
+     */
+    @Test
+    void outerTxOn_success() {
+        // given
+        var username = "outerTxOn_success";
+
+        // when
+        this.memberService.joinV1__(username);
+
+        // then : 모든 데이터가 정상 저장된다.
+        assertThat(this.memberRepository.find(username).isPresent()).isTrue();
+        assertThat(this.logRepository.find(username).isPresent()).isTrue();
+    }
 }
