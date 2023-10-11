@@ -3,6 +3,7 @@ package hello.springtx.propagation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,6 +22,20 @@ public class MemberService {
 
         log.info("=== LogRepository 호출 시작 ===");
         this.logRepository.save(logMessage);
+        log.info("=== LogRepository 호출 종료 ===");
+    }
+
+    @Transactional
+    public void joinV1_(String username) {
+        var member = new Member(username);
+        var logMessage = new Log(username);
+
+        log.info("=== MemberRepository 호출 시작 ===");
+        this.memberRepository.save_(member);
+        log.info("=== MemberRepository 호출 종료 ===");
+
+        log.info("=== LogRepository 호출 시작 ===");
+        this.logRepository.save_(logMessage);
         log.info("=== LogRepository 호출 종료 ===");
     }
 

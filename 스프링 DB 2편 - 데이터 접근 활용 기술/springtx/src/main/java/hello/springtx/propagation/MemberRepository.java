@@ -20,6 +20,11 @@ public class MemberRepository {
         this.em.persist(member);
     }
 
+    public void save_(Member member) {
+        log.info("member 저장");
+        this.em.persist(member);
+    }
+
     public Optional<Member> find(String username) {
         return this.em.createQuery("select m from Member m where m.username = :username", Member.class)
                 .setParameter("username", username)

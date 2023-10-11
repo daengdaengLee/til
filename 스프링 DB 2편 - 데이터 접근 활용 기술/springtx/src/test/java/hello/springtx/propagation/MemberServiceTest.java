@@ -54,4 +54,22 @@ class MemberServiceTest {
         assertThat(this.memberRepository.find(username).isPresent()).isTrue();
         assertThat(this.logRepository.find(username).isEmpty()).isTrue();
     }
+
+    /**
+     * MemberService    @Transactional:ON
+     * MemberRepository @Transactional:OFF
+     * LogRepository    @Transactional:OFF
+     */
+    @Test
+    void singleTx() {
+        // given
+        var username = "singleTx";
+
+        // when
+        this.memberService.joinV1_(username);
+
+        // then : 모든 데이터가 정상 저장된다.
+        assertThat(this.memberRepository.find(username).isPresent()).isTrue();
+        assertThat(this.logRepository.find(username).isPresent()).isTrue();
+    }
 }
