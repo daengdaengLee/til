@@ -19,8 +19,9 @@ public class JpaMain {
 
             var member = new Member();
             member.setName("member1");
-            member.changeTeam(team);
             em.persist(member);
+
+            team.addMember(member);
 
 //            em.flush();
 //            em.clear();
