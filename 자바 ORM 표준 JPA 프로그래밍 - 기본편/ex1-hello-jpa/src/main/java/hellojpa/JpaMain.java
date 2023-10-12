@@ -12,24 +12,18 @@ public class JpaMain {
         tx.begin();
 
         try {
-            var member1 = new Member();
-            member1.setUsername("A");
+            var team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
 
-            var member2 = new Member();
-            member2.setUsername("B");
+            var member = new Member();
+            member.setName("member1");
+            member.setTeamId(team.getId());
+            em.persist(member);
 
-            var member3 = new Member();
-            member3.setUsername("C");
-
-            System.out.println("BEFORE");
-            em.persist(member1); // 1, 51
-            em.persist(member2); // MEM(2)
-            em.persist(member3); // MEM(3)
-
-            System.out.println("member1.id = " + member1.getId());
-            System.out.println("member2.id = " + member2.getId());
-            System.out.println("member3.id = " + member3.getId());
-            System.out.println("AFTER");
+            var findMember = em.find(Member.class, member.getId());
+            var findTeamId = findMember.getTeamId();
+            var findTeam = em.find(Team.class, findTeamId);
 
             tx.commit();
         } catch (Exception e) {
