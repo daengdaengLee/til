@@ -31,13 +31,10 @@ public class JpaMain {
 
             // 조회
             var findMember = em.find(Member.class, member.getId());
-            var findTeam = findMember.getTeam();
-            System.out.println("findTeam.id = " + findTeam.getId());
-            System.out.println("findTeam.name = " + findTeam.getName());
-
-            //
-            var newTeam = em.find(Team.class, teamB.getId());
-            findMember.setTeam(newTeam);
+            var members = findMember.getTeam().getMembers();
+            for (var m : members) {
+                System.out.println("m = " + m.getName());
+            }
 
             tx.commit();
         } catch (Exception e) {
