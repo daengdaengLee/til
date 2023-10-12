@@ -13,14 +13,14 @@ public class JpaMain {
 
         try {
             // 저장
-            var member = new Member();
-            member.setName("member1");
-            em.persist(member);
-
             var team = new Team();
             team.setName("TeamA");
-            team.getMembers().add(member);
             em.persist(team);
+
+            var member = new Member();
+            member.setName("member1");
+            member.setTeam(team);
+            em.persist(member);
 
             em.flush();
             em.clear();
