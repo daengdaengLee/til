@@ -3,6 +3,7 @@ package jpabook.jpashop;
 import jakarta.persistence.Persistence;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.Order;
+import jpabook.jpashop.domain.OrderItem;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -14,10 +15,16 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 관계형 DB에 맞춘 설계
-            var order = em.find(Order.class, 1L);
-            var memberId = order.getMemberId();
-            var member = em.find(Member.class, memberId);
+            // pseudocode
+            // var order = new Order();
+            // order.addOrderItem(new OrderItem());
+
+            var order = new Order();
+            em.persist(order);
+
+            var orderItem = new OrderItem();
+            orderItem.setOrder(order);
+            em.persist(orderItem);
 
             tx.commit();
         } catch (Exception e) {
