@@ -10,9 +10,9 @@ public class Member {
     private Long id;
     @Column(name = "USERNAME")
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false) // 강제로 읽기 전용으로 설정. 야매로 양방향 연결.
-    private Team team;
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
 
     public Long getId() {
         return id;
@@ -30,11 +30,11 @@ public class Member {
         this.name = name;
     }
 
-    public Team getTeam() {
-        return team;
+    public Locker getLocker() {
+        return locker;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setLocker(Locker locker) {
+        this.locker = locker;
     }
 }

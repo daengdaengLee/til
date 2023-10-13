@@ -12,14 +12,7 @@ public class JpaMain {
         tx.begin();
 
         try {
-            var member = new Member();
-            member.setName("member1");
-            em.persist(member);
 
-            var team = new Team();
-            team.setName("teamA");
-            team.getMembers().add(member);
-            em.persist(team);
 
             tx.commit();
         } catch (Exception e) {

@@ -1,9 +1,9 @@
 package hellojpa;
 
-import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 @Entity
 public class Team {
@@ -12,9 +12,6 @@ public class Team {
     @Column(name = "TEAM_ID")
     private Long id;
     private String name;
-    @OneToMany
-    @JoinColumn(name = "TEAM_ID") // 꼭 필요함. 없으면 JoinTable (중간 테이블) 로 기본 동작함.
-    private List<Member> members = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -30,13 +27,5 @@ public class Team {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Member> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<Member> members) {
-        this.members = members;
     }
 }
