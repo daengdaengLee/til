@@ -3,9 +3,13 @@
              xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
     <persistence-unit name="hello">
+        <class>hellojpa.Album</class>
+        <class>hellojpa.Book</class>
+        <class>hellojpa.Item</class>
         <class>hellojpa.Locker</class>
         <class>hellojpa.Member</class>
         <class>hellojpa.MemberProduct</class>
+        <class>hellojpa.Movie</class>
         <class>hellojpa.Product</class>
         <class>hellojpa.Team</class>
 
