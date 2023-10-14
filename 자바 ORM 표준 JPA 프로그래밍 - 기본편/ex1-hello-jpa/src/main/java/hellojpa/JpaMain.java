@@ -23,7 +23,8 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            em.find(Movie.class, movie.getId());
+            // 개별 테이블 전략에서는 이렇게 조회할 때 문제임. 복잡한 union 쿼리 실행됨.
+            em.find(Item.class, movie.getId());
 
             tx.commit();
         } catch (Exception e) {
