@@ -1,9 +1,7 @@
 package jpabook.jpashop;
 
 import jakarta.persistence.Persistence;
-import jpabook.jpashop.domain.Member;
-import jpabook.jpashop.domain.Order;
-import jpabook.jpashop.domain.OrderItem;
+import jpabook.jpashop.domain.Book;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -15,16 +13,11 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // pseudocode
-            // var order = new Order();
-            // order.addOrderItem(new OrderItem());
+            var book = new Book();
+            book.setName("JPA");
+            book.setAuthor("김영한");
 
-            var order = new Order();
-            em.persist(order);
-
-            var orderItem = new OrderItem();
-            orderItem.setOrder(order);
-            em.persist(orderItem);
+            em.persist(book);
 
             tx.commit();
         } catch (Exception e) {
