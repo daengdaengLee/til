@@ -3,8 +3,8 @@ package hellojpa;
 import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn // SINGLE_TABLE 전략이면 DiscriminatorColumn 애노테이션 없어도 자동으로 생김. 항상 써두는 게 운영상 좋음
 public class Item {
     @Id
     @GeneratedValue
