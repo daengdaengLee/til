@@ -3,9 +3,9 @@ package hellojpa;
 import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn // SINGLE_TABLE 전략이면 DiscriminatorColumn 애노테이션 없어도 자동으로 생김. 항상 써두는 게 운영상 좋음
-public class Item {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@DiscriminatorColumn // 이 전략에서는 의미 없음
+public abstract class Item {
     @Id
     @GeneratedValue
     private Long id;
