@@ -4,6 +4,7 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
     <persistence-unit name="hello">
         <class>hellojpa.Album</class>
+        <class>hellojpa.BaseEntity</class>
         <class>hellojpa.Book</class>
         <class>hellojpa.Item</class>
         <class>hellojpa.Locker</class>
