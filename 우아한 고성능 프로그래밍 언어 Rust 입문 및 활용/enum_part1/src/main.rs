@@ -1,16 +1,13 @@
 fn main() {
-    let m1 = Message::StartGame;
-    let m2 = Message::WinPoint { who: String::from("홍길동") };
-    let m3 = Message::ChangePlayerName(String::from("둘리"));
+    let some_number = Some(2);
+    let absent_number: Option<i32> = None;
 
-    println!("m1 = {:?}", m1);
-    println!("m2 = {:?}", m2);
-    println!("m3 = {:?}", m3);
+    println!("some_number: {:?}", some_number);
+    println!("absent_number: {:?}", absent_number);
 }
 
-#[derive(Debug, PartialEq)]
-enum Message {
-    StartGame,
-    WinPoint { who: String },
-    ChangePlayerName(String),
-}
+// 기본으로 존재
+// enum Option<T> {
+//     None,
+//     Some(T),
+// }
