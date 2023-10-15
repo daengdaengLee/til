@@ -1,20 +1,12 @@
 fn main() {
-    handle_message(&Message::StartGame);
-    handle_message(&Message::WinPoint { who: String::from("홍길동") });
-    handle_message(&Message::ChangePlayerName(String::from("둘리")));
+    let x = Some(2);
+    println!("{:?}", increment(x));
+    println!("{:?}", increment(None));
 }
 
-#[derive(Debug)]
-enum Message {
-    StartGame,
-    WinPoint { who: String },
-    ChangePlayerName(String),
-}
-
-fn handle_message(message: &Message) {
-    match message {
-        Message::StartGame => println!("게임시작!"),
-        Message::WinPoint { who } => println!("{}의 득점", who),
-        Message::ChangePlayerName(name) => println!("플레이어 이름 변경 => {}", name),
-    };
+fn increment(x: Option<i32>) -> Option<i32> {
+    match x {
+        Some(i) => Some(i + 1),
+        None => None
+    }
 }
