@@ -12,9 +12,13 @@ public class JpaMain {
         tx.begin();
 
         try {
+            var team = new Team();
+            team.setName("team1");
+            em.persist(team);
+
             var member = new Member();
             member.setName("user1");
-
+            member.setTeam(team);
             em.persist(member);
 
             em.flush();
@@ -22,14 +26,13 @@ public class JpaMain {
 
             System.out.println("==========");
 
-            // var findMember = em.find(Member.class, member.getId());
+            var findMember = em.find(Member.class, member.getId());
+            System.out.println("findMember = " + findMember.getClass());
+            System.out.println("findMember.team = " + findMember.getTeam().getClass());
 
-            // var findMember = em.getReference(Member.class, member.getId());
-
-            var findMember = em.getReference(Member.class, member.getId());
-            System.out.println("fineMember: " + findMember.getClass());
-            System.out.println("member.id = " + findMember.getId());
-            System.out.println("member.name = " + findMember.getName());
+            System.out.println("==========");
+            System.out.println("findMember.team.name: " + findMember.getTeam().getName());
+            System.out.println("==========");
 
             tx.commit();
         } catch (Exception e) {
