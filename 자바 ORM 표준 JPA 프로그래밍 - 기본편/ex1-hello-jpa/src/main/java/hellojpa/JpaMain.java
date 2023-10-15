@@ -12,27 +12,16 @@ public class JpaMain {
         tx.begin();
 
         try {
-            var team = new Team();
-            team.setName("team1");
-            em.persist(team);
+            var child1 = new Child();
+            var child2 = new Child();
 
-            var member = new Member();
-            member.setName("user1");
-            member.setTeam(team);
-            em.persist(member);
+            var parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
 
-            em.flush();
-            em.clear();
-
-            System.out.println("==========");
-
-            var findMember = em.find(Member.class, member.getId());
-            System.out.println("findMember = " + findMember.getClass());
-            System.out.println("findMember.team = " + findMember.getTeam().getClass());
-
-            System.out.println("==========");
-            System.out.println("findMember.team.name: " + findMember.getTeam().getName());
-            System.out.println("==========");
+            em.persist(parent);
+            // em.persist(child1);
+            // em.persist(child2);
 
             tx.commit();
         } catch (Exception e) {
