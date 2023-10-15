@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Entity
 public class Delivery extends BaseEntity {
     @Id
@@ -14,7 +16,7 @@ public class Delivery extends BaseEntity {
     private String street;
     private String zipcode;
     private DeliveryStatus status;
-    @OneToOne(mappedBy = "delivery")
+    @OneToOne(mappedBy = "delivery", fetch = LAZY)
     private Order order;
 
     public Long getId() {
