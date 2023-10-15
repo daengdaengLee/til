@@ -1,9 +1,7 @@
 fn main() {
-    let mut user = User {
-        name: String::from("홍길동"),
-        email: String::from("gildong@example.com"),
-        active: true,
-    };
+    let mut user = build_user(
+        String::from("홍길동"),
+        String::from("gildong@example.com"));
 
     user.email = String::from("gd.hong@example.com");
 
@@ -14,4 +12,12 @@ struct User {
     name: String,
     email: String,
     active: bool,
+}
+
+fn build_user(name: String, email: String) -> User {
+    User {
+        name, // name: name 축약
+        email, // email: email 축약
+        active: true,
+    }
 }
