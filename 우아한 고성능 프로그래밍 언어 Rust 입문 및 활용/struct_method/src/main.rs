@@ -1,10 +1,7 @@
 fn main() {
-    let mut rect = Rectangle {
-        width: 20,
-        height: 30,
-    };
-
-    println!("이 사각형의 면적은 {} 입니다.", rect.area());
+    let square = Rectangle::square(20);
+    println!("정사각형 = {:?}", square);
+    println!("정사각형 넓이 = {}", square.area());
 }
 
 #[derive(Debug)]
@@ -13,9 +10,18 @@ struct Rectangle {
     height: u32,
 }
 
+// impl 블록 여러개 있어도 OK
 impl Rectangle {
-    // 가변 임대
-    fn area(self: &mut Self) -> u32 {
+    fn square(size: u32) -> Rectangle {
+        Rectangle {
+            width: size,
+            height: size,
+        }
+    }
+}
+
+impl Rectangle {
+    fn area(&self) -> u32 {
         self.width * self.height
     }
 }
