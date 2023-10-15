@@ -14,7 +14,7 @@ struct Rectangle {
 }
 
 impl Rectangle {
-    fn area(self: &Self) -> u32 {
+    fn area(self: &Rectangle) -> u32 {
         self.width * self.height
     }
 }
