@@ -14,6 +14,6 @@ fn handle_message(message: &Message) {
     match message {
         Message::StartGame => println!("게임시작!"),
         Message::WinPoint { who } => println!("{}의 득점", who),
-        _ => println!("아직 구현하지 않은 메시지"),
+        Message::ChangePlayerName(_) => println!("플레이어 이름변경 요청"),
     }
 }
