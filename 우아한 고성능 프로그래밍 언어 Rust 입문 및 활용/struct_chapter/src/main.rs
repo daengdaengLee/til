@@ -1,21 +1,13 @@
+// 튜플과 비슷하지만 Color, Point 가 서로 명확하게 구분됨.
+// 서로 바뀔 걱정이 없음
 fn main() {
-    let user1 = User {
-        name: String::from("홍길동"),
-        email: String::from("gildong@example.com"),
-        active: true,
-    };
+    let color = Color(1, 2, 3);
+    let point = Point(1, 2, 3);
 
-    let user2 = User {
-        active: false,
-        ..user1
-    };
-
-    println!("user2.email = {}", user2.email);
-    // println!("user1.email = {}", user1.email); // 소유권 이전으로 사용 불가
+    println!("color {} {} {}", color.0, color.1, color.2);
+    println!("point {} {} {}", point.0, point.1, point.2);
 }
 
-struct User {
-    name: String,
-    email: String,
-    active: bool,
-}
+struct Color(i32, i32, i32);
+
+struct Point(i32, i32, i32);
