@@ -1,17 +1,16 @@
 fn main() {
-    let red: Color = Color::Red;
-    let green = Color::Green;
+    let m1 = Message::StartGame;
+    let m2 = Message::WinPoint { who: String::from("홍길동") };
+    let m3 = Message::ChangePlayerName(String::from("둘리"));
 
-    println!("red = {:?}", red);
-    println!("green = {:?}", green);
-
-    println!("red == green : {}", red == green);
-    println!("red == red : {}", red == Color::Red);
+    println!("m1 = {:?}", m1);
+    println!("m2 = {:?}", m2);
+    println!("m3 = {:?}", m3);
 }
 
 #[derive(Debug, PartialEq)]
-enum Color {
-    Red,
-    Green,
-    Blue,
+enum Message {
+    StartGame,
+    WinPoint { who: String },
+    ChangePlayerName(String),
 }
