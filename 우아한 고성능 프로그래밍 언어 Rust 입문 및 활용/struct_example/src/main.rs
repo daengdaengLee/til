@@ -5,7 +5,7 @@ fn main() {
     };
 
     println!("해당 사각형의 면적은 {}.", area(&rect));
-    println!("사각형 = {:?}", rect);
+    dbg!(rect);
 }
 
 #[derive(Debug)]
