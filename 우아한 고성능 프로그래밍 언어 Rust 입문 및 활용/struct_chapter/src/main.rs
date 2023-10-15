@@ -1,23 +1,22 @@
 fn main() {
-    let mut user = build_user(
-        String::from("홍길동"),
-        String::from("gildong@example.com"));
+    let user1 = User {
+        name: String::from("홍길동"),
+        email: String::from("gildong@example.com"),
+        active: true,
+    };
 
-    user.email = String::from("gd.hong@example.com");
+    let user2 = User {
+        name: user1.name,
+        email: user1.email,
+        active: false,
+    };
 
-    println!("이용자의 이메일 = {}", user.email);
+    println!("user2.email = {}", user2.email);
+    // println!("user1.email = {}", user1.email); // 소유권 이전으로 사용 불가
 }
 
 struct User {
     name: String,
     email: String,
     active: bool,
-}
-
-fn build_user(name: String, email: String) -> User {
-    User {
-        name, // name: name 축약
-        email, // email: email 축약
-        active: true,
-    }
 }
