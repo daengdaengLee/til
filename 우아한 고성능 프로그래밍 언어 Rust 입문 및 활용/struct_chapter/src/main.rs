@@ -6,9 +6,8 @@ fn main() {
     };
 
     let user2 = User {
-        name: user1.name,
-        email: user1.email,
         active: false,
+        ..user1
     };
 
     println!("user2.email = {}", user2.email);
