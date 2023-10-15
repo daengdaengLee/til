@@ -5,8 +5,10 @@ fn main() {
     };
 
     println!("해당 사각형의 면적은 {}.", area(&rect));
+    println!("사각형 = {:?}", rect);
 }
 
+#[derive(Debug)]
 struct Rectangle {
     width: u32,
     height: u32,
