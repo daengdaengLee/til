@@ -2,6 +2,8 @@ package hellojpa;
 
 import jakarta.persistence.Persistence;
 
+import java.time.LocalDateTime;
+
 public class JpaMain {
     public static void main(String[] args) {
         var emf = Persistence.createEntityManagerFactory("hello");
@@ -12,20 +14,12 @@ public class JpaMain {
         tx.begin();
 
         try {
-            var child1 = new Child();
-            var child2 = new Child();
+            var member = new Member();
+            member.setName("user1");
+            member.setWorkPeriod(new Period(LocalDateTime.now(), LocalDateTime.now()));
+            member.setHomeAddress(new Address("city", "street", "zipcode"));
 
-            var parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
-
-            em.persist(parent);
-
-            em.flush();
-            em.clear();
-
-            var findParent = em.find(Parent.class, parent.getId());
-            findParent.getChildList().remove(0);
+            em.persist(member);
 
             tx.commit();
         } catch (Exception e) {
