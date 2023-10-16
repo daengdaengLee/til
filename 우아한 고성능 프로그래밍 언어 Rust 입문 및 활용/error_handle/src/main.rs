@@ -1,11 +1,23 @@
+use std::io::{Error, Read};
 use std::fs::File;
 
 fn main() {
-    let file: File = File::open("hello.txt").expect("파일을 열 수 없음");
+    let username = read_username().unwrap();
+    println!("username = {}", username);
 }
 
-// 기본 내장
-// enum Result<T, E> {
-//     OK(T),
-//     Err(E),
-// }
+fn read_username() -> Result<String, Error> {
+    let file_result = File::open("hello.txt");
+
+    let mut file = match file_result {
+        Ok(file) => file,
+        Err(e) => return Err(e),
+    };
+
+    let mut username = String::new();
+
+    match file.read_to_string(&mut username) {
+        Ok(_) => Ok(username),
+        Err(e) => Err(e),
+    }
+}
