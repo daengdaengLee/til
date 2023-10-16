@@ -22,15 +22,17 @@ public class JpaMain {
             member1.setHomeAddress(address);
             em.persist(member1);
 
+            var copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+
             var member2 = new Member();
             member2.setName("member2");
             member2.setWorkPeriod(new Period(LocalDateTime.now(), LocalDateTime.now()));
-            member2.setHomeAddress(address);
+            member2.setHomeAddress(copyAddress);
             em.persist(member2);
 
             // ...
 
-            // !!! member1, member2 모두 newCity 로 바뀜 !!!
+            // !!! 값 복사를 했기 때문에 안전. member1 데이터만 변경됨 !!!
             member1.getHomeAddress().setCity("newCity");
 
             tx.commit();
