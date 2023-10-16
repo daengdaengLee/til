@@ -7,17 +7,8 @@ fn main() {
 }
 
 fn read_username() -> Result<String, Error> {
-    let file_result = File::open("hello.txt");
-
-    let mut file = match file_result {
-        Ok(file) => file,
-        Err(e) => return Err(e),
-    };
-
+    let mut file = File::open("hello.txt")?;
     let mut username = String::new();
-
-    match file.read_to_string(&mut username) {
-        Ok(_) => Ok(username),
-        Err(e) => Err(e),
-    }
+    file.read_to_string(&mut username)?;
+    Ok(username)
 }
