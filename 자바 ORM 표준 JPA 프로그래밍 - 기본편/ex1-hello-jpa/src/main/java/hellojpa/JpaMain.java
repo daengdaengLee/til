@@ -20,8 +20,8 @@ public class JpaMain {
             member.getFavoriteFoods().add("족발");
             member.getFavoriteFoods().add("피자");
 
-            member.getAddressHistory().add(new Address("old1", "street1", "10000"));
-            member.getAddressHistory().add(new Address("old2", "street1", "10000"));
+            member.getAddressHistory().add(new AddressEntity("old1", "street1", "10000"));
+            member.getAddressHistory().add(new AddressEntity("old2", "street1", "10000"));
 
             em.persist(member);
 
@@ -33,7 +33,7 @@ public class JpaMain {
             var findMember = em.find(Member.class, member.getId());
             var addressHistory = findMember.getAddressHistory();
             for (var address : addressHistory) {
-                System.out.println("address.city = " + address.getCity());
+                System.out.println("address.city = " + address.getAddress().getCity());
             }
             var favoriteFoods = findMember.getFavoriteFoods();
             for (var favoriteFood : favoriteFoods) {
@@ -53,8 +53,11 @@ public class JpaMain {
             // 쿼리 잘 확인
             // 전부 다 지우고 현재 상태로 다시 insert 함
             // 실무에서는 값 타입 컬렉션 대신 1:N 관계를 고려
-            findMember.getAddressHistory().remove(new Address("old1", "street1", "10000"));
-            findMember.getAddressHistory().add(new Address("new1", "street1", "10000"));
+            // findMember.getAddressHistory().remove(new Address("old1", "street1", "10000"));
+            // findMember.getAddressHistory().add(new Address("new1", "street1", "10000"));
+            var oldAddressHistory = findMember.getAddressHistory().get(0).getAddress();
+            findMember.getAddressHistory().get(0).setAddress(
+                    new Address("new1", oldAddressHistory.getStreet(), oldAddressHistory.getZipcode()));
 
             tx.commit();
         } catch (Exception e) {
