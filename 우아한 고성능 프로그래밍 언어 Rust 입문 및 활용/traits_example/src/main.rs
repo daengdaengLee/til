@@ -4,13 +4,10 @@ fn main() {
         name: String::from("홍길동"),
         active: true,
     };
-    // 트레잇 바운드로 같은 타입으로 한정했기 때문에 Pet, Person 끼리 인사 못 함
-    // meet(&cat, &gildong);
-    // println!("==========");
-    // meet(&gildong, &cat);
-
-    // Greet 구현하고 있는 "같은" 타입끼리만 인사 가능
-    meet(&cat, &Pet::Dog);
+    // 트레잇 바운드를 2개의 다른 제네릭에 각각 걸었기 때문에 서로 다른 타입이어도 인사 가능
+    meet(&cat, &gildong);
+    println!("==========");
+    meet(&gildong, &cat);
 }
 
 trait Greet {
@@ -44,7 +41,7 @@ impl Greet for Person {
     }
 }
 
-fn meet<T: Greet>(one: &T, another: &T) {
+fn meet<T: Greet, U: Greet>(one: &T, another: &U) {
     println!("첫번째가 인사합니다 = {}", one.greeting());
     println!("두번째가 인사합니다 = {}", another.greeting());
 }
