@@ -1,8 +1,6 @@
 package hellojpa;
 
 import hellojpa.jpql.Member;
-import hellojpa.jpql.MemberType;
-import hellojpa.jpql.Team;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
 
@@ -20,26 +18,24 @@ public class Main {
         tx.begin();
 
         try {
-            var team = new Team();
-            team.setName("teamA");
-            em.persist(team);
+            var member1 = new Member();
+            member1.setUsername("관리자1");
+            em.persist(member1);
 
-            var member = new Member();
-            // member.setUsername("관리자");
-            member.setUsername("관리자 아님");
-            member.setAge(10);
-            member.setType(MemberType.USER);
-            member.changeTeam(team);
-            em.persist(member);
+            var member2 = new Member();
+            member2.setUsername("관리자2");
+            em.persist(member2);
 
             em.flush();
             em.clear();
 
-            var query = """
-                    select nullif(m.username, '관리자') 
-                    from Member as m
-                    """;
-            var result = em.createQuery(query, String.class)
+            // var query ="select concat('a', 'b') from Member as m";
+            // var query ="select 'a' || 'b' from Member as m";
+            // var query ="select substring(m.username, 2, 3) from Member as m";
+            // var query = "select locate('de', 'abcdefg') from Member as m";
+            // var query = "select size(t.members) from Team as t";
+            var query = "select size(t.members) from Team as t";
+            var result = em.createQuery(query)
                     .getResultList();
             for (var resultObject : result) {
                 System.out.println("resultObject = " + resultObject);
