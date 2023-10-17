@@ -12,8 +12,14 @@ public class JpaMain {
         tx.begin();
 
         try {
-            var result = em.createQuery("select m from Member m where m.name like '%kim%'", Member.class)
-                    .getResultList();
+            // Criteria 사용 준비
+            var cb = em.getCriteriaBuilder();
+            var query = cb.createQuery(Member.class);
+
+            var m = query.from(Member.class);
+
+            var cq = query.select(m).where(cb.equal(m.get("name"), "kim"));
+            var result = em.createQuery(cq).getResultList();
 
             for (var member : result) {
                 System.out.println("member = " + member);
