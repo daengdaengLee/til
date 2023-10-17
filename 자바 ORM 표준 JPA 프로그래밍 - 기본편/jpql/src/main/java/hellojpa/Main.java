@@ -6,8 +6,6 @@ import hellojpa.jpql.Team;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
 
-import java.util.Arrays;
-
 public class Main {
     public static void main(String[] args) {
         try (var emf = Persistence.createEntityManagerFactory("hello")) {
@@ -37,14 +35,18 @@ public class Main {
             em.flush();
             em.clear();
 
-            // var query = "select m.username, 'HELLO', true from Member as m where m.type = hellojpa.jpql.MemberType.ADMIN";
-            var query = "select m.username, 'HELLO', true from Member as m where m.type = :memberType";
-            var result = em.createQuery(query)
-                    .setParameter("memberType", MemberType.ADMIN)
+            var query = """
+                    select
+                        case when m.age <= 10 then '학생요금'
+                             when m.age >= 60 then '경로요금'
+                             else '일반요금'
+                        end
+                    from Member as m
+                    """;
+            var result = em.createQuery(query, String.class)
                     .getResultList();
             for (var resultObject : result) {
-                var resultTuple = (Object[]) resultObject;
-                System.out.println("resultTuple = " + Arrays.toString(resultTuple));
+                System.out.println("resultObject = " + resultObject);
             }
 
             tx.commit();
