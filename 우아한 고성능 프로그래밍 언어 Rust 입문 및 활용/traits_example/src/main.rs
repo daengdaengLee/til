@@ -1,4 +1,4 @@
-use std::fmt::Debug;
+use std::fmt::{Debug, Display, Formatter, Write};
 
 fn main() {
     let cat = Pet::Cat;
@@ -6,7 +6,7 @@ fn main() {
         name: String::from("홍길동"),
         active: true,
     };
-    meet(&cat, &Pet::Dog);
+    meet(&cat, &gildong);
 }
 
 trait Greet {
@@ -41,8 +41,16 @@ impl Greet for Person {
     }
 }
 
-// 여러 트레잇 바운드 적용
-fn meet<T: Greet + Debug>(one: &T, another: &T) {
+impl Display for Person {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        f.write_str(&self.name)
+    }
+}
+
+// where 문법
+fn meet<T, U>(one: &T, another: &U)
+    where T: Greet + Debug,
+          U: Greet + Display, {
     println!("{:?} 인사합니다 = {}", one, one.greeting());
-    println!("{:?} 인사합니다 = {}", another, another.greeting());
+    println!("{} 인사합니다 = {}", another, another.greeting());
 }
