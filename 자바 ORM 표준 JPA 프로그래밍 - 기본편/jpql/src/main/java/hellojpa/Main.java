@@ -37,8 +37,10 @@ public class Main {
             em.flush();
             em.clear();
 
-            var query = "select m.username, 'HELLO', true from Member as m where m.type = hellojpa.jpql.MemberType.ADMIN";
+            // var query = "select m.username, 'HELLO', true from Member as m where m.type = hellojpa.jpql.MemberType.ADMIN";
+            var query = "select m.username, 'HELLO', true from Member as m where m.type = :memberType";
             var result = em.createQuery(query)
+                    .setParameter("memberType", MemberType.ADMIN)
                     .getResultList();
             for (var resultObject : result) {
                 var resultTuple = (Object[]) resultObject;
