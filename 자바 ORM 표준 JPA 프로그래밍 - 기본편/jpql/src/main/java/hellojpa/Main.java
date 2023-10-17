@@ -1,6 +1,7 @@
 package hellojpa;
 
 import hellojpa.jpql.Member;
+import hellojpa.jpql.Team;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
 
@@ -18,23 +19,29 @@ public class Main {
         tx.begin();
 
         try {
-            for (var i = 1; i <= 100; i++) {
-                var member = new Member();
-                member.setUsername("member" + i);
-                member.setAge(i);
-                em.persist(member);
-            }
+            var team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
+            var member = new Member();
+            // member.setUsername("member1");
+            member.setUsername("teamA");
+            member.setAge(10);
+            member.changeTeam(team);
+            em.persist(member);
 
             em.flush();
             em.clear();
 
-            var result = em.createQuery("select m from Member as m order by m.age desc", Member.class)
-                    .setFirstResult(10)
-                    .setMaxResults(5)
+            // var query = "select m from Member as m inner join m.team as t";
+            // var query = "select m from Member as m join m.team as t";
+            // var query = "select m from Member as m left outer join m.team as t";
+            // var query = "select m from Member as m left join m.team as t";
+            var query = "select m from Member as m, Team as t where m.username = t.name";
+            var result = em.createQuery(query, Member.class)
                     .getResultList();
-            System.out.println("result.size() = " + result.size());
-            for (var member : result) {
-                System.out.println("member = " + member);
+            for (var resultMember : result) {
+                System.out.println("resultMember = " + resultMember);
             }
 
             tx.commit();
