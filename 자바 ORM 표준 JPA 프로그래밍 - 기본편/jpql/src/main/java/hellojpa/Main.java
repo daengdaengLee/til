@@ -34,7 +34,8 @@ public class Main {
             // var query ="select substring(m.username, 2, 3) from Member as m";
             // var query = "select locate('de', 'abcdefg') from Member as m";
             // var query = "select size(t.members) from Team as t";
-            var query = "select size(t.members) from Team as t";
+            // var query = "select size(t.members) from Team as t";
+            var query = "select function('group_concat', m.username) from Member as m";
             var result = em.createQuery(query)
                     .getResultList();
             for (var resultObject : result) {
