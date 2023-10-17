@@ -25,9 +25,8 @@ public class Main {
             em.persist(team);
 
             var member = new Member();
-            member.setUsername("teamA");
+            // member.setUsername("teamA");
             member.setAge(10);
-            // member.setType(MemberType.ADMIN);
             member.setType(MemberType.USER);
             member.changeTeam(team);
             em.persist(member);
@@ -36,11 +35,7 @@ public class Main {
             em.clear();
 
             var query = """
-                    select
-                        case when m.age <= 10 then '학생요금'
-                             when m.age >= 60 then '경로요금'
-                             else '일반요금'
-                        end
+                    select coalesce(m.username, '이름 없는 회원') 
                     from Member as m
                     """;
             var result = em.createQuery(query, String.class)
