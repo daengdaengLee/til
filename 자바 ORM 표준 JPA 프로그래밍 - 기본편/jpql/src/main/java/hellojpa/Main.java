@@ -25,7 +25,8 @@ public class Main {
             em.persist(team);
 
             var member = new Member();
-            // member.setUsername("teamA");
+            // member.setUsername("관리자");
+            member.setUsername("관리자 아님");
             member.setAge(10);
             member.setType(MemberType.USER);
             member.changeTeam(team);
@@ -35,7 +36,7 @@ public class Main {
             em.clear();
 
             var query = """
-                    select coalesce(m.username, '이름 없는 회원') 
+                    select nullif(m.username, '관리자') 
                     from Member as m
                     """;
             var result = em.createQuery(query, String.class)
