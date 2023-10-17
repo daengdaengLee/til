@@ -1,7 +1,6 @@
 package hellojpa;
 
 import hellojpa.jpql.Member;
-import hellojpa.jpql.MemberDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
 
@@ -19,19 +18,24 @@ public class Main {
         tx.begin();
 
         try {
-            var member = new Member();
-            member.setUsername("member1");
-            member.setAge(10);
-            em.persist(member);
+            for (var i = 1; i <= 100; i++) {
+                var member = new Member();
+                member.setUsername("member" + i);
+                member.setAge(i);
+                em.persist(member);
+            }
 
             em.flush();
             em.clear();
 
-            var result = em.createQuery("select new hellojpa.jpql.MemberDto(m.username, m.age) from Member as m", MemberDto.class)
+            var result = em.createQuery("select m from Member as m order by m.age desc", Member.class)
+                    .setFirstResult(10)
+                    .setMaxResults(5)
                     .getResultList();
-            var memberDto = result.get(0);
-            System.out.println("memberDto.username = " + memberDto.getUsername());
-            System.out.println("memberDto.age = " + memberDto.getAge());
+            System.out.println("result.size() = " + result.size());
+            for (var member : result) {
+                System.out.println("member = " + member);
+            }
 
             tx.commit();
         } catch (Exception e) {
