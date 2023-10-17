@@ -23,22 +23,15 @@ public class Main {
             member.setAge(10);
             em.persist(member);
 
-            var query1 = em.createQuery("select m from Member as m", Member.class);
-            for (var result1 : query1.getResultList()) {
-                System.out.println("result1.id = " + result1.getId());
-                System.out.println("result1.username = " + result1.getUsername());
-                System.out.println("result1.age = " + result1.getAge());
-            }
+            em.flush();
+            em.clear();
 
-            var query2 = em.createQuery("select m.username from Member as m where m.username = :username", String.class);
-            query2.setParameter("username", "member1");
-            String result2 = query2.getSingleResult();
-            System.out.println("result2 = " + result2);
+            // 엔티티 프로젝션 결과 엔티티는 모두 영속성 컨텍스트에서 관리된다.
+            var result = em.createQuery("select m from Member as m", Member.class)
+                    .getResultList();
 
-            var query3 = em.createQuery("select m.username, m.age from Member as m");
-            var result3 = query3.getResultList();
-            for (var item : result3) {
-            }
+            var findMember = result.get(0);
+            findMember.setAge(20);
 
             tx.commit();
         } catch (Exception e) {
