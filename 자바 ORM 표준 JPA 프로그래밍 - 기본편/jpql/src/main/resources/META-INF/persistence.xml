@@ -5,6 +5,7 @@
     <persistence-unit name="hello">
         <class>hellojpa.jpql.Address</class>
         <class>hellojpa.jpql.Member</class>
+        <class>hellojpa.jpql.MemberDto</class>
         <class>hellojpa.jpql.Order</class>
         <class>hellojpa.jpql.Product</class>
         <class>hellojpa.jpql.Team</class>

@@ -1,10 +1,9 @@
 package hellojpa;
 
 import hellojpa.jpql.Member;
+import hellojpa.jpql.MemberDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
-
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,11 +27,11 @@ public class Main {
             em.flush();
             em.clear();
 
-            List<Object[]> resultList = em.createQuery("select distinct m.username, m.age from Member as m")
+            var result = em.createQuery("select new hellojpa.jpql.MemberDto(m.username, m.age) from Member as m", MemberDto.class)
                     .getResultList();
-            var result = resultList.get(0);
-            System.out.println("result[0] (username) = " + result[0]);
-            System.out.println("result[1] (age) = " + result[1]);
+            var memberDto = result.get(0);
+            System.out.println("memberDto.username = " + memberDto.getUsername());
+            System.out.println("memberDto.age = " + memberDto.getAge());
 
             tx.commit();
         } catch (Exception e) {
