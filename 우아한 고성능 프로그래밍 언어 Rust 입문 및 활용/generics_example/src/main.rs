@@ -1,14 +1,20 @@
-fn main() {}
+fn main() {
+    let p1 = Point { x: 1, y: 2 };
+    println!("p1.x() = {}", p1.x());
 
-// enum 에 제네릭 선언
-// 기본으로 선언되어 있음
-
-enum Option<T> {
-    Some(T),
-    None,
+    let p2 = Point { x: "가", y: "A" };
+    println!("p2.x() = {}", p2.x());
 }
 
-enum Result<T, E> {
-    Ok(T),
-    Err(E),
+#[derive(Debug)]
+struct Point<T> {
+    x: T,
+    y: T,
+}
+
+// 메소드 선언에 제네릭
+impl<T> Point<T> {
+    fn x(&self) -> &T {
+        &self.x
+    }
 }
