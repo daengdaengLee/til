@@ -32,7 +32,8 @@ public class Main {
             em.flush();
             em.clear();
 
-            var query = "select m from Member as m left join Team as t on m.username = t.name";
+            // var query = "select m from Member as m left join Team as t on m.username = t.name";
+            var query = "select m from Member as m join Team as t on m.username = t.name";
             var result = em.createQuery(query, Member.class)
                     .getResultList();
             for (var resultMember : result) {
