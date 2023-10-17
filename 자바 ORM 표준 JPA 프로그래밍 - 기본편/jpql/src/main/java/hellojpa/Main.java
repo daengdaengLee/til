@@ -1,9 +1,12 @@
 package hellojpa;
 
 import hellojpa.jpql.Member;
+import hellojpa.jpql.MemberType;
 import hellojpa.jpql.Team;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
+
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
@@ -26,18 +29,20 @@ public class Main {
             var member = new Member();
             member.setUsername("teamA");
             member.setAge(10);
+            // member.setType(MemberType.ADMIN);
+            member.setType(MemberType.USER);
             member.changeTeam(team);
             em.persist(member);
 
             em.flush();
             em.clear();
 
-            // var query = "select m from Member as m left join Team as t on m.username = t.name";
-            var query = "select m from Member as m join Team as t on m.username = t.name";
-            var result = em.createQuery(query, Member.class)
+            var query = "select m.username, 'HELLO', true from Member as m where m.type = hellojpa.jpql.MemberType.ADMIN";
+            var result = em.createQuery(query)
                     .getResultList();
-            for (var resultMember : result) {
-                System.out.println("resultMember = " + resultMember);
+            for (var resultObject : result) {
+                var resultTuple = (Object[]) resultObject;
+                System.out.println("resultTuple = " + Arrays.toString(resultTuple));
             }
 
             tx.commit();
