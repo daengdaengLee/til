@@ -1,6 +1,5 @@
 package hellojpa;
 
-import hellojpa.jpql.Address;
 import hellojpa.jpql.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
@@ -27,8 +26,12 @@ public class Main {
             em.flush();
             em.clear();
 
-            em.createQuery("select o.address from Order as o", Address.class)
+            var resultList = em.createQuery("select distinct m.username, m.age from Member as m")
                     .getResultList();
+            var o = resultList.get(0);
+            var result = (Object[]) o;
+            System.out.println("result[0] (username) = " + result[0]);
+            System.out.println("result[1] (age) = " + result[1]);
 
             tx.commit();
         } catch (Exception e) {
