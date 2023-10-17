@@ -4,6 +4,8 @@ import hellojpa.jpql.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
 
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
         try (var emf = Persistence.createEntityManagerFactory("hello")) {
@@ -26,10 +28,9 @@ public class Main {
             em.flush();
             em.clear();
 
-            var resultList = em.createQuery("select distinct m.username, m.age from Member as m")
+            List<Object[]> resultList = em.createQuery("select distinct m.username, m.age from Member as m")
                     .getResultList();
-            var o = resultList.get(0);
-            var result = (Object[]) o;
+            var result = resultList.get(0);
             System.out.println("result[0] (username) = " + result[0]);
             System.out.println("result[1] (age) = " + result[1]);
 
