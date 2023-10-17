@@ -24,7 +24,7 @@ public class Main {
             em.persist(team);
 
             var member = new Member();
-            member.setUsername("member1");
+            member.setUsername("teamA");
             member.setAge(10);
             member.changeTeam(team);
             em.persist(member);
@@ -32,7 +32,7 @@ public class Main {
             em.flush();
             em.clear();
 
-            var query = "select m from Member as m left join m.team as t on t.name = 'teamA'";
+            var query = "select m from Member as m left join Team as t on m.username = t.name";
             var result = em.createQuery(query, Member.class)
                     .getResultList();
             for (var resultMember : result) {
