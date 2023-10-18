@@ -56,25 +56,8 @@ public class Main {
             em.flush();
             em.clear();
 
-            // 엔티티 직접 사용 가능
-//            var query = "select m from Member as m where m = :member";
-//            var result = em.createQuery(query, Member.class)
-//                    .setParameter("member", member1)
-//                    .getResultList();
-            // 식별자 사용
-//            var query = "select m from Member as m where m.id = :memberId";
-//            var result = em.createQuery(query, Member.class)
-//                    .setParameter("memberId", member1.getId())
-//                    .getResultList();
-            // 엔티티 사용
-//            var query = "select m from Member as m where m.team = :team";
-//            var result = em.createQuery(query, Member.class)
-//                    .setParameter("team", teamA)
-//                    .getResultList();
-            // 식별자 사용
-            var query = "select m from Member as m where m.team.id = :teamId";
-            var result = em.createQuery(query, Member.class)
-                    .setParameter("teamId", teamA.getId())
+            var result = em.createNamedQuery("Member.findByUsername", Member.class)
+                    .setParameter("username", member1.getUsername())
                     .getResultList();
             System.out.println("result.size() = " + result.size());
             for (var item : result) {
