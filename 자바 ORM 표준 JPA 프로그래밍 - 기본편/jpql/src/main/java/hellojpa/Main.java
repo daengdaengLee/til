@@ -1,6 +1,7 @@
 package hellojpa;
 
 import hellojpa.jpql.Member;
+import hellojpa.jpql.Team;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
 
@@ -18,24 +19,37 @@ public class Main {
         tx.begin();
 
         try {
+            var team = new Team();
+            team.setName("팀A");
+            em.persist(team);
+
             var member1 = new Member();
             member1.setUsername("관리자1");
+
+            member1.setTeam(team);
+            team.getMembers().add(member1);
+
             em.persist(member1);
 
             var member2 = new Member();
             member2.setUsername("관리자2");
+
+            member2.setTeam(team);
+            team.getMembers().add(member2);
+
             em.persist(member2);
 
             em.flush();
             em.clear();
 
-            // var query ="select concat('a', 'b') from Member as m";
-            // var query ="select 'a' || 'b' from Member as m";
-            // var query ="select substring(m.username, 2, 3) from Member as m";
-            // var query = "select locate('de', 'abcdefg') from Member as m";
-            // var query = "select size(t.members) from Team as t";
-            // var query = "select size(t.members) from Team as t";
-            var query = "select function('group_concat', m.username) from Member as m";
+            // 상태 필드
+            // var query = "select m.username from Member as m";
+            // 단일 값 연관 경로 -> 묵시적 내부 조인 발생! 탐색 O
+            // var query = "select m.team from Member as m";
+            // 컬렉션 값 연관 경로 -> 묵시적 내부 조인 발생! 탐색 X, 컬렉션 대상으로는 탐색할 필드가 없어서, 해도 size 정도?
+            // var query = "select t.members from Team as t";
+            // from 절에서 명시적 join 을 걸고 별칭을 지정해서 탐색
+            var query = "select m.username from Team as t join t.members as m";
             var result = em.createQuery(query)
                     .getResultList();
             for (var resultObject : result) {
