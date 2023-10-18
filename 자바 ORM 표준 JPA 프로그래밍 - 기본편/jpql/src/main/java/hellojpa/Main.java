@@ -65,7 +65,11 @@ public class Main {
             // 컬렉션 fetch join 결과에서 중복 엔티티 제거
             // var query = "select distinct t from Team as t join fetch t.members";
             // 그냥 join 인 경우 SQL 은 join 이지만 select 를 Team 만 해서 결국 N+1 발생
-            var query = "select t from Team as t join t.members as m";
+            // var query = "select t from Team as t join t.members as m";
+            // fetch join 대상에는 별칭 지정하지 말 것, 둘 이상의 컬렉션에 대해 fetch join 불가능
+            // fetch join 하면 pagination api 사용 불가능
+            // pagination 필요하면 조회 순서를 바꾸거나 (m -> t), BatchSize(default_batch_fetch_size) 설정해서 사용
+            var query = "select t from Team as t";
             var result = em.createQuery(query, Team.class)
                     .getResultList();
             System.out.println("result.size() = " + result.size());
