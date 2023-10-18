@@ -56,13 +56,26 @@ public class Main {
             em.flush();
             em.clear();
 
-            var result = em.createNamedQuery("Member.findByUsername", Member.class)
-                    .setParameter("username", member1.getUsername())
-                    .getResultList();
-            System.out.println("result.size() = " + result.size());
-            for (var item : result) {
-                System.out.println("item = " + item);
-            }
+            var result = em.createQuery("update Member as m set m.age = 20")
+                    .executeUpdate();
+            System.out.println("result = " + result);
+
+            // bulk 연산 이후 영속성 컨텍스트 clear 하지 않으면 문제 발생 (DB 업데이트한 내용 반영 X)
+            System.out.println("member1.age = " + member1.getAge());
+            System.out.println("member2.age = " + member2.getAge());
+            System.out.println("member3.age = " + member3.getAge());
+            System.out.println("member4.age = " + member4.getAge());
+
+            System.out.println("=== em.clear() ===");
+            em.clear();
+            member1 = em.find(Member.class, member1.getId());
+            member2 = em.find(Member.class, member2.getId());
+            member3 = em.find(Member.class, member3.getId());
+            member4 = em.find(Member.class, member4.getId());
+            System.out.println("member1.age = " + member1.getAge());
+            System.out.println("member2.age = " + member2.getAge());
+            System.out.println("member3.age = " + member3.getAge());
+            System.out.println("member4.age = " + member4.getAge());
 
             tx.commit();
         } catch (Exception e) {
