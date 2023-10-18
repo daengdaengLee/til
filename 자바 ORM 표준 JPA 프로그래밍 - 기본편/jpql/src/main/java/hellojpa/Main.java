@@ -19,41 +19,58 @@ public class Main {
         tx.begin();
 
         try {
-            var team = new Team();
-            team.setName("팀A");
-            em.persist(team);
+            var teamA = new Team();
+            teamA.setName("팀A");
+            em.persist(teamA);
+
+            var teamB = new Team();
+            teamB.setName("팀B");
+            em.persist(teamB);
+
+            var teamC = new Team();
+            teamC.setName("팀C");
+            em.persist(teamC);
 
             var member1 = new Member();
-            member1.setUsername("관리자1");
-
-            member1.setTeam(team);
-            team.getMembers().add(member1);
-
+            member1.setUsername("회원1");
+            member1.setTeam(teamA);
+            teamA.getMembers().add(member1);
             em.persist(member1);
 
             var member2 = new Member();
-            member2.setUsername("관리자2");
-
-            member2.setTeam(team);
-            team.getMembers().add(member2);
-
+            member2.setUsername("회원2");
+            member2.setTeam(teamA);
+            teamA.getMembers().add(member2);
             em.persist(member2);
+
+            var member3 = new Member();
+            member3.setUsername("회원3");
+            member3.setTeam(teamB);
+            teamB.getMembers().add(member3);
+            em.persist(member3);
+
+            var member4 = new Member();
+            member4.setUsername("회원4");
+            em.persist(member4);
 
             em.flush();
             em.clear();
 
-            // 상태 필드
-            // var query = "select m.username from Member as m";
-            // 단일 값 연관 경로 -> 묵시적 내부 조인 발생! 탐색 O
-            // var query = "select m.team from Member as m";
-            // 컬렉션 값 연관 경로 -> 묵시적 내부 조인 발생! 탐색 X, 컬렉션 대상으로는 탐색할 필드가 없어서, 해도 size 정도?
-            // var query = "select t.members from Team as t";
-            // from 절에서 명시적 join 을 걸고 별칭을 지정해서 탐색
-            var query = "select m.username from Team as t join t.members as m";
-            var result = em.createQuery(query)
+            // N+1 문제 발생
+            // var query = "select m from Member as m";
+            // fetch join 으로 해결, 한 방에 쿼리
+            // var query = "select m from Member as m join fetch m.team";
+            // 컬렉션 fetch join
+            // var query = "select t from Team as t join fetch t.members";
+            // 컬렉션 fetch join 결과에서 중복 엔티티 제거
+            // var query = "select distinct t from Team as t join fetch t.members";
+            // 그냥 join 인 경우 SQL 은 join 이지만 select 를 Team 만 해서 결국 N+1 발생
+            var query = "select t from Team as t join t.members as m";
+            var result = em.createQuery(query, Team.class)
                     .getResultList();
-            for (var resultObject : result) {
-                System.out.println("resultObject = " + resultObject);
+            System.out.println("result.size() = " + result.size());
+            for (var item : result) {
+                System.out.println("item = " + item.getName() + ", " + item.getMembers().size());
             }
 
             tx.commit();
