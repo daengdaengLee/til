@@ -38,6 +38,12 @@ public class MemberService {
         return this.memberRepository.findOne(memberId);
     }
 
+    @Transactional
+    public void update(Long id, String name) {
+        var member = memberRepository.findOne(id);
+        member.setName(name);
+    }
+
     private void validateDuplicateMember(Member member) {
         var findMembers = this.memberRepository.findByName(member.getName());
         if (!findMembers.isEmpty()) {
