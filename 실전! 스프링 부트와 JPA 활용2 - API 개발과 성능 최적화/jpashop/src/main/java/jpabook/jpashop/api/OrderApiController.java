@@ -9,6 +9,7 @@ import jpabook.jpashop.repository.OrderSearch;
 import jpabook.jpashop.repository.order.query.OrderItemQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryRepository;
+import jpabook.jpashop.service.query.OrderQueryService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class OrderApiController {
     private final OrderRepository orderRepository;
     private final OrderQueryRepository orderQueryRepository;
+    private final OrderQueryService orderQueryService;
 
     // simple orders 와 동일한 문제, 동작 안 함
     @GetMapping("/api/v1/orders")
@@ -44,6 +46,11 @@ public class OrderApiController {
         return orders.stream()
                 .map(OrderDto::new)
                 .toList();
+    }
+
+    @GetMapping("/api/v2.osiv/orders")
+    public List<jpabook.jpashop.service.query.OrderDto> ordersV2_osiv() {
+        return orderQueryService.ordersV2();
     }
 
     @GetMapping("/api/v3/orders")
