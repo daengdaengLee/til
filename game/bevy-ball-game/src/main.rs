@@ -1,6 +1,8 @@
 use bevy::{prelude::*, window::PrimaryWindow};
 use rand::prelude::*;
 
+pub const PLAY_SOUND: bool = false;
+
 pub const PLAYER_SPEED: f32 = 500.0;
 // This is the player sprite size.
 pub const PLAYER_SIZE: f32 = 64.0;
@@ -275,7 +277,7 @@ pub fn update_enemy_direction(
         transform.translation = translation;
 
         // Play SFX
-        if direction_changed {
+        if direction_changed && PLAY_SOUND {
             // Play Sound Effect
             let sound_effect_1 = asset_server.load("audio/pluck_001.ogg");
             let sound_effect_2 = asset_server.load("audio/pluck_002.ogg");
@@ -341,11 +343,13 @@ pub fn enemy_hit_player(
             let enemy_radius = ENEMY_SIZE / 2.0;
             if distance < player_radius + enemy_radius {
                 println!("Enemy hit player! Game Over!");
-                let sound_effect = asset_server.load("audio/explosionCrunch_000.ogg");
-                commands.spawn(AudioBundle {
-                    source: sound_effect,
-                    settings: PlaybackSettings::ONCE,
-                });
+                if PLAY_SOUND {
+                    let sound_effect = asset_server.load("audio/explosionCrunch_000.ogg");
+                    commands.spawn(AudioBundle {
+                        source: sound_effect,
+                        settings: PlaybackSettings::ONCE,
+                    });
+                }
                 commands.entity(player_entity).despawn();
             }
         }
@@ -368,11 +372,13 @@ pub fn player_hit_star(
             if distance < PLAYER_SIZE / 2.0 + STAR_SIZE / 2.0 {
                 println!("Player hit star!");
                 score.value += 1;
-                let sound_effect = asset_server.load("audio/laserLarge_000.ogg");
-                commands.spawn(AudioBundle {
-                    source: sound_effect,
-                    settings: PlaybackSettings::ONCE,
-                });
+                if PLAY_SOUND {
+                    let sound_effect = asset_server.load("audio/laserLarge_000.ogg");
+                    commands.spawn(AudioBundle {
+                        source: sound_effect,
+                        settings: PlaybackSettings::ONCE,
+                    });
+                }
                 commands.entity(star_entity).despawn();
             }
         }
