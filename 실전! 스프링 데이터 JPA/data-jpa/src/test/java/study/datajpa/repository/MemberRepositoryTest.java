@@ -359,4 +359,31 @@ class MemberRepositoryTest {
             System.out.println("member.team.name = " + member.getTeam().getName());
         }
     }
+
+    @Test
+    void queryHint() {
+        // given
+        memberRepository.save(new Member("member1", 10));
+        em.flush();
+        em.clear();
+
+        // when
+        var findMember = memberRepository.findReadOnlyByUsername("member1");
+        findMember.setUsername("member2");
+
+        // 더티 체킹 안 함, 쿼리 힌트로 read only 로 설정했기 때문
+        em.flush();
+    }
+
+    @Test
+    void lock() {
+        // given
+        memberRepository.save(new Member("member1", 10));
+        em.flush();
+        em.clear();
+
+        // when
+        // for update 붙어서 나감
+        memberRepository.findLockByUsername("member1");
+    }
 }
