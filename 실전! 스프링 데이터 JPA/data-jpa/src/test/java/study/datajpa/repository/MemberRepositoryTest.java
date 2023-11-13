@@ -1,5 +1,6 @@
 package study.datajpa.repository;
 
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 @Rollback(value = false)
 class MemberRepositoryTest {
+    @Autowired
+    EntityManager em;
     @Autowired
     MemberRepository memberRepository;
     @Autowired
@@ -299,6 +302,29 @@ class MemberRepositoryTest {
 
         for (var memberDto : dtoPage.getContent()) {
             System.out.println("memberDto = " + memberDto);
+        }
+    }
+
+    @Test
+    void bulkUpdate() {
+        // given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+
+        // when
+        var resultCount = memberRepository.bulkAgePlus(20);
+        // @Modifying(clearAutomatically = true) 으로 처리
+        // em.clear();
+
+        // then
+        assertThat(resultCount).isEqualTo(3);
+
+        var members = memberRepository.findAll();
+        for (var member : members) {
+            System.out.println("member = " + member);
         }
     }
 }
