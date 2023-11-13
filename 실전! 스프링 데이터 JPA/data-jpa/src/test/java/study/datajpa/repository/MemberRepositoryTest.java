@@ -327,4 +327,36 @@ class MemberRepositoryTest {
             System.out.println("member = " + member);
         }
     }
+
+    @Test
+    void findMemberLazy() {
+        // given
+        // member1 -> teamA
+        // member2 -> teamB
+
+        var teamA = new Team("teamA");
+        var teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        var member1 = new Member("member1", 10, teamA);
+        var member2 = new Member("member2", 10, teamB);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+
+        // when N + 1
+        // select Member 1
+        // var members = memberRepository.findAll();
+        // var members = memberRepository.findMemberFetchJoin();
+        // var members = memberRepository.findMemberEntityGraph();
+        var members = memberRepository.findEntityGraphByUsername("member1");
+
+        for (var member : members) {
+            System.out.println("member.username = " + member.getUsername());
+            System.out.println("member.teamClass = " + member.getTeam().getClass());
+            System.out.println("member.team.name = " + member.getTeam().getName());
+        }
+    }
 }
