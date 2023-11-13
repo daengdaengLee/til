@@ -12,16 +12,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Transactional
 @Rollback(value = false)
-class MemberRepositoryTest {
+class MemberJpaRepositoryTest {
     @Autowired
-    MemberRepository memberRepository;
+    MemberJpaRepository memberJpaRepository;
 
     @Test
     void testMember() {
         var member = new Member("memberA");
-        var savedMember = memberRepository.save(member);
+        var savedMember = memberJpaRepository.save(member);
 
-        var findMember = memberRepository.findById(savedMember.getId()).orElseThrow();
+        var findMember = memberJpaRepository.find(savedMember.getId());
 
         assertThat(findMember.getId()).isEqualTo(member.getId());
         assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
@@ -32,28 +32,28 @@ class MemberRepositoryTest {
     void basicCRUD() {
         var member1 = new Member("member1");
         var member2 = new Member("member2");
-        memberRepository.save(member1);
-        memberRepository.save(member2);
+        memberJpaRepository.save(member1);
+        memberJpaRepository.save(member2);
 
         // 단건 조회 검증
-        var findMember1 = memberRepository.findById(member1.getId()).orElseThrow();
-        var findMember2 = memberRepository.findById(member2.getId()).orElseThrow();
+        var findMember1 = memberJpaRepository.findById(member1.getId()).orElseThrow();
+        var findMember2 = memberJpaRepository.findById(member2.getId()).orElseThrow();
         assertThat(findMember1).isEqualTo(member1);
         assertThat(findMember2).isEqualTo(member2);
 
         // 리스트 조회 검증
-        var all = memberRepository.findAll();
+        var all = memberJpaRepository.findAll();
         assertThat(all.size()).isEqualTo(2);
 
         // 카운트 검증
-        var count = memberRepository.count();
+        var count = memberJpaRepository.count();
         assertThat(count).isEqualTo(2);
 
         // 삭제 검증
-        memberRepository.delete(member1);
-        memberRepository.delete(member2);
+        memberJpaRepository.delete(member1);
+        memberJpaRepository.delete(member2);
 
-        var deletedCount = memberRepository.count();
+        var deletedCount = memberJpaRepository.count();
         assertThat(deletedCount).isEqualTo(0);
     }
 }
