@@ -14,4 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 즉, 여기서는 @Query 애노테이션 없어도 동작함
     @Query(name = "Member.findByUsername")
     List<Member> findByUsername(@Param("username") String username);
+
+    @Query("select m from Member m where m.username = :username and m.age = :age")
+    List<Member> findUser(@Param("username") String username, @Param("age") int age);
 }

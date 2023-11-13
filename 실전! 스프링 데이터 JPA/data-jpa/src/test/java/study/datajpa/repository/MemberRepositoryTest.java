@@ -83,4 +83,17 @@ class MemberRepositoryTest {
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0)).isEqualTo(m1);
     }
+
+    @Test
+    void testQuery() {
+        var m1 = new Member("AAA", 10);
+        var m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        var result = memberRepository.findUser("AAA", 10);
+
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0)).isEqualTo(m1);
+    }
 }
