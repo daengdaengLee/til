@@ -3,8 +3,11 @@ package study.datajpa.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
@@ -163,5 +166,139 @@ class MemberRepositoryTest {
 
         var findNotExistingOptional = memberRepository.findOptionalByUsername("NNN");
         assertThat(findNotExistingOptional.isEmpty()).isTrue();
+    }
+
+    @Test
+    void paging() {
+        // given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 10));
+        memberRepository.save(new Member("member3", 10));
+        memberRepository.save(new Member("member4", 10));
+        memberRepository.save(new Member("member5", 10));
+
+        int age = 10;
+        var pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+
+        // when
+        var page = memberRepository.findByAge(age, pageRequest);
+
+        // then
+        assertThat(page.getContent().size()).isEqualTo(3);
+        assertThat(page.getTotalElements()).isEqualTo(5);
+        assertThat(page.getNumber()).isEqualTo(0);
+        assertThat(page.getTotalPages()).isEqualTo(2);
+        assertThat(page.isFirst()).isTrue();
+        assertThat(page.hasNext()).isTrue();
+
+        for (var member : page.getContent()) {
+            System.out.println("member = " + member);
+        }
+    }
+
+    @Test
+    void slice() {
+        // given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 10));
+        memberRepository.save(new Member("member3", 10));
+        memberRepository.save(new Member("member4", 10));
+        memberRepository.save(new Member("member5", 10));
+
+        int age = 10;
+        var pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+
+        // when
+        var slice = memberRepository.findSliceByAge(age, pageRequest);
+
+        // then
+        assertThat(slice.getContent().size()).isEqualTo(3);
+        assertThat(slice.getNumber()).isEqualTo(0);
+        assertThat(slice.isFirst()).isTrue();
+        assertThat(slice.hasNext()).isTrue();
+
+        for (var member : slice.getContent()) {
+            System.out.println("member = " + member);
+        }
+    }
+
+    @Test
+    void list() {
+        // given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 10));
+        memberRepository.save(new Member("member3", 10));
+        memberRepository.save(new Member("member4", 10));
+        memberRepository.save(new Member("member5", 10));
+
+        int age = 10;
+        var pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+
+        // when
+        var list = memberRepository.findListByAge(age, pageRequest);
+
+        // then
+        assertThat(list.size()).isEqualTo(3);
+
+        for (var member : list) {
+            System.out.println("member = " + member);
+        }
+    }
+
+    @Test
+    void sepCount() {
+        // given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 10));
+        memberRepository.save(new Member("member3", 10));
+        memberRepository.save(new Member("member4", 10));
+        memberRepository.save(new Member("member5", 10));
+
+        var pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+
+        // when
+        var page = memberRepository.findSepCountQuery(pageRequest);
+
+        // then
+        assertThat(page.getContent().size()).isEqualTo(3);
+        assertThat(page.getTotalElements()).isEqualTo(5);
+        assertThat(page.getNumber()).isEqualTo(0);
+        assertThat(page.getTotalPages()).isEqualTo(2);
+        assertThat(page.isFirst()).isTrue();
+        assertThat(page.hasNext()).isTrue();
+
+        for (var member : page.getContent()) {
+            System.out.println("member = " + member);
+        }
+    }
+
+    @Test
+    void mapToDto() {
+        // given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 10));
+        memberRepository.save(new Member("member3", 10));
+        memberRepository.save(new Member("member4", 10));
+        memberRepository.save(new Member("member5", 10));
+
+        int age = 10;
+        var pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+
+        // when
+        var page = memberRepository.findByAge(age, pageRequest);
+
+        var dtoPage = page.map(m -> new MemberDto(m.getId(), m.getUsername(), null));
+
+        // then
+        assertThat(dtoPage.getContent().size()).isEqualTo(3);
+        assertThat(dtoPage.getTotalElements()).isEqualTo(5);
+        assertThat(dtoPage.getNumber()).isEqualTo(0);
+        assertThat(dtoPage.getTotalPages()).isEqualTo(2);
+        assertThat(dtoPage.isFirst()).isTrue();
+        assertThat(dtoPage.hasNext()).isTrue();
+
+        for (var memberDto : dtoPage.getContent()) {
+            System.out.println("memberDto = " + memberDto);
+        }
     }
 }
