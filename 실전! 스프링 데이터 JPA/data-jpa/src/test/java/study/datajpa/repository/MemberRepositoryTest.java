@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -126,5 +128,16 @@ class MemberRepositoryTest {
         assertThat(result.get(0).getId()).isEqualTo(member.getId());
         assertThat(result.get(0).getUsername()).isEqualTo(member.getUsername());
         assertThat(result.get(0).getTeamName()).isEqualTo(member.getTeam().getName());
+    }
+
+    @Test
+    void findByNames() {
+        var m1 = new Member("AAA", 10);
+        var m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        var result = memberRepository.findByNames(Arrays.asList("AAA", "BBB"));
+        assertThat(result).containsExactlyInAnyOrder(m1, m2);
     }
 }
