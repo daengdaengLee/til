@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.entity.Member;
+import study.datajpa.entity.Team;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,6 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
+    @Autowired
+    TeamRepository teamRepository;
 
     @Test
     void testMember() {
@@ -95,5 +98,33 @@ class MemberRepositoryTest {
 
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0)).isEqualTo(m1);
+    }
+
+    @Test
+    void findUsernameList() {
+        var m1 = new Member("AAA", 10);
+        var m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        var result = memberRepository.findUsernameList();
+        assertThat(result).containsExactlyInAnyOrder(m1.getUsername(), m2.getUsername());
+    }
+
+    @Test
+    void findMemberDto() {
+        var team = new Team("teamA");
+        teamRepository.save(team);
+
+        var member = new Member("AAA", 10);
+        member.setTeam(team);
+        memberRepository.save(member);
+
+        var result = memberRepository.findMemberDto();
+
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).getId()).isEqualTo(member.getId());
+        assertThat(result.get(0).getUsername()).isEqualTo(member.getUsername());
+        assertThat(result.get(0).getTeamName()).isEqualTo(member.getTeam().getName());
     }
 }
