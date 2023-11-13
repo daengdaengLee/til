@@ -8,6 +8,7 @@ import study.datajpa.entity.Member;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
@@ -28,4 +29,15 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("select m from Member m where m.username in :names")
     List<Member> findByNames(@Param("names") Collection<String> names);
+
+    // 컬렉션
+    List<Member> findListByUsername(String username);
+
+    // 단건 조회에서 결과가 1개 초과이면 예외 발생
+
+    // 단건
+    Member findMemberByUsername(String username);
+
+    // 단건 Optional
+    Optional<Member> findOptionalByUsername(String username);
 }

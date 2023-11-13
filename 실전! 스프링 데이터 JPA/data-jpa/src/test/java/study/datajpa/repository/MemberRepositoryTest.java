@@ -140,4 +140,28 @@ class MemberRepositoryTest {
         var result = memberRepository.findByNames(Arrays.asList("AAA", "BBB"));
         assertThat(result).containsExactlyInAnyOrder(m1, m2);
     }
+
+    @Test
+    void returnType() {
+        var m1 = new Member("AAA", 10);
+        var m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        var findList = memberRepository.findListByUsername("AAA");
+        assertThat(findList).containsExactlyInAnyOrder(m1);
+
+        var findExistingMember = memberRepository.findMemberByUsername("AAA");
+        assertThat(findExistingMember).isEqualTo(m1);
+
+        var findNotExistingMember = memberRepository.findMemberByUsername("NNN");
+        assertThat(findNotExistingMember).isNull();
+
+        var findExistingOptional = memberRepository.findOptionalByUsername("AAA");
+        assertThat(findExistingOptional.isPresent()).isTrue();
+        assertThat(findExistingOptional.orElseThrow()).isEqualTo(m1);
+
+        var findNotExistingOptional = memberRepository.findOptionalByUsername("NNN");
+        assertThat(findNotExistingOptional.isEmpty()).isTrue();
+    }
 }
