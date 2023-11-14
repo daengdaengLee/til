@@ -401,4 +401,27 @@ class MemberRepositoryTest {
             System.out.println("member = " + member);
         }
     }
+
+    @Test
+    void specificationBasic() {
+        // given
+        var teamA = new Team("teamA");
+        em.persist(teamA);
+
+        var m1 = new Member("m1", 0, teamA);
+        var m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        // when
+        var spec = MemberSpec.username("m1").and(MemberSpec.teamName("teamA"));
+        var members = memberRepository.findAll(spec);
+
+        // then
+        assertThat(members).hasSize(1);
+        System.out.println("member = " + members.get(0));
+    }
 }
