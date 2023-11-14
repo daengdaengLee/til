@@ -547,4 +547,51 @@ class MemberRepositoryTest {
             System.out.println("dto.team.name = " + dto.getTeam().getName());
         }
     }
+
+    @Test
+    void nativeQuery() {
+        // given
+        var teamA = new Team("teamA");
+        em.persist(teamA);
+
+        var m1 = new Member("m1", 0, teamA);
+        var m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        // when
+        var result = memberRepository.findByNativeQuery("m1");
+
+        // then
+        System.out.println("result = " + result);
+    }
+
+    @Test
+    void nativeProjection() {
+        // given
+        var teamA = new Team("teamA");
+        em.persist(teamA);
+
+        var m1 = new Member("m1", 0, teamA);
+        var m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        // when
+        var result = memberRepository.findByNativeProjection(PageRequest.of(0, 10));
+
+        // then
+        var content = result.getContent();
+        for (var memberProjection : content) {
+            System.out.println("memberProjection.id = " + memberProjection.getId());
+            System.out.println("memberProjection.username = " + memberProjection.getUsername());
+            System.out.println("memberProjection.teamName = " + memberProjection.getTeamName());
+        }
+    }
 }
