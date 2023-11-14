@@ -386,4 +386,19 @@ class MemberRepositoryTest {
         // for update 붙어서 나감
         memberRepository.findLockByUsername("member1");
     }
+
+    @Test
+    void callCustom() {
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+
+        var members = memberRepository.findMemberCustom();
+
+        for (var member : members) {
+            System.out.println("member = " + member);
+        }
+    }
 }

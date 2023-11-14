@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
     List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 
     // 타입.메서드이름 으로 먼저 named query 찾고 -> 없으면 메서드 쿼리로 수행
