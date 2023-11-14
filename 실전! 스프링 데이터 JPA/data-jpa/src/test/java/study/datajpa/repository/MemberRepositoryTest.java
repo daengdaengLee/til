@@ -454,4 +454,97 @@ class MemberRepositoryTest {
         // then
         assertThat(result.get(0).getUsername()).isEqualTo("m1");
     }
+
+    @Test
+    void projections() {
+        // given
+        var teamA = new Team("teamA");
+        em.persist(teamA);
+
+        var m1 = new Member("m1", 0, teamA);
+        var m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        // when
+        var result = memberRepository.findProjectionsByUsername("m1");
+
+        // then
+        for (UsernameOnly usernameOnly : result) {
+            System.out.println("usernameOnly = " + usernameOnly.getUsername());
+        }
+    }
+
+    @Test
+    void dtoProjections() {
+        // given
+        var teamA = new Team("teamA");
+        em.persist(teamA);
+
+        var m1 = new Member("m1", 0, teamA);
+        var m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        // when
+        var result = memberRepository.findDtoProjectionsByUsername("m1");
+
+        // then
+        for (var dto : result) {
+            System.out.println("dto = " + dto);
+        }
+    }
+
+    @Test
+    void genericProjections() {
+        // given
+        var teamA = new Team("teamA");
+        em.persist(teamA);
+
+        var m1 = new Member("m1", 0, teamA);
+        var m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        // when
+        var result = memberRepository.findGenericProjectionsByUsername("m1", UsernameOnlyDto.class);
+
+        // then
+        for (var dto : result) {
+            System.out.println("dto = " + dto);
+        }
+    }
+
+    @Test
+    void nestedClosedProjections() {
+        // given
+        var teamA = new Team("teamA");
+        em.persist(teamA);
+
+        var m1 = new Member("m1", 0, teamA);
+        var m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        // when
+        var result = memberRepository.findGenericProjectionsByUsername("m1", NestedClosedProjections.class);
+
+        // then
+        for (var dto : result) {
+            System.out.println("dto.username = " + dto.getUsername());
+            System.out.println("dto.team.name = " + dto.getTeam().getName());
+        }
+    }
 }
