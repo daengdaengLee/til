@@ -1,5 +1,6 @@
 package study.querydsl;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -279,5 +280,49 @@ public class QuerydslBasicTest {
         assertThat(result)
                 .extracting("username")
                 .containsExactlyInAnyOrder("teamA", "teamB");
+    }
+
+    /**
+     * 예) 회원과 팀을 조인하면서, 팀 이름이 teamA 인 팀만 조인, 회원은 모두 조회
+     * JPQL: select m, t from Member m left join m.team t on t.name = 'teamA'
+     */
+    @Test
+    void joinOnFiltering() {
+        var result = queryFactory
+                .select(member, team)
+                .from(member)
+                .leftJoin(member.team, team)
+                .on(team.name.eq("teamA"))
+                //.join(member.team, team)
+                //.where(team.name.eq("teamA")) // inner join 인 경우 on 으로 해도 되지만 where 로 해도 결과 동일
+                .fetch();
+
+        for (var tuple : result) {
+            System.out.println("tuple = " + tuple);
+        }
+    }
+
+    /**
+     * 연관관계 없는 엔티티 외부 조인
+     * 회원의 이름이 팀 이름과 같은 회원 조회
+     */
+    @Test
+    void joinOnNoRelation() {
+        em.persist(new Member("teamA"));
+        em.persist(new Member("teamB"));
+        em.persist(new Member("teamC"));
+
+        var result = queryFactory
+                .select(member, team)
+                .from(member)
+                .leftJoin(team)
+                .on(member.username.eq(team.name))
+                //.join(team)
+                //.on(member.username.eq(team.name)) // 세타조인에서는 where 사용 x, on 사용해야 함
+                .fetch();
+
+        for (Tuple tuple : result) {
+            System.out.println("tuple = " + tuple);
+        }
     }
 }
