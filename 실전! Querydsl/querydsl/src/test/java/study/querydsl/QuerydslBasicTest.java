@@ -71,4 +71,31 @@ public class QuerydslBasicTest {
         assertThat(findMember).isNotNull();
         assertThat(findMember.getUsername()).isEqualTo("member1");
     }
+
+    @Test
+    void search() {
+        var findMember = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("member1")
+                        .and(member.age.between(10, 30)))
+                .fetchOne();
+
+        assertThat(findMember).isNotNull();
+        assertThat(findMember.getUsername()).isEqualTo("member1");
+        assertThat(findMember.getAge()).isGreaterThanOrEqualTo(10);
+        assertThat(findMember.getAge()).isLessThanOrEqualTo(30);
+    }
+
+    @Test
+    void searchAndParam() {
+        var findMember = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("member1"),
+                        member.age.eq(10))
+                .fetchOne();
+
+        assertThat(findMember).isNotNull();
+        assertThat(findMember.getUsername()).isEqualTo("member1");
+        assertThat(findMember.getAge()).isEqualTo(10);
+    }
 }
