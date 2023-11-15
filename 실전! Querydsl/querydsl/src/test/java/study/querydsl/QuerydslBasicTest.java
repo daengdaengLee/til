@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.entity.Member;
-import study.querydsl.entity.QMember;
 import study.querydsl.entity.Team;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static study.querydsl.entity.QMember.member;
 
 @SpringBootTest
 @Transactional
@@ -59,12 +59,13 @@ public class QuerydslBasicTest {
     @Test
     void startQuerydsl() {
         // var queryFactory = new JPAQueryFactory(em);
-        var m = new QMember("m");
+        // var m = new QMember("m"); // 같은 테이블을 조인해야 하는 경우 직접 생성해서 사용, 인자로 넘김 문자열이 alias 이름이 됨.
+        // var m = QMember.member;
 
         var findMember = queryFactory
-                .select(m)
-                .from(m)
-                .where(m.username.eq("member1")) // 파라미터 바인딩 처리
+                .select(member)
+                .from(member)
+                .where(member.username.eq("member1")) // 파라미터 바인딩 처리
                 .fetchOne();
 
         assertThat(findMember).isNotNull();
