@@ -172,4 +172,31 @@ public class QuerydslBasicTest {
             System.out.println("-> member.team = " + member.getTeam());
         }
     }
+
+    @Test
+    void paging1() {
+        var result = queryFactory
+                .selectFrom(member)
+                .orderBy(member.username.desc())
+                .offset(1)
+                .limit(2)
+                .fetch();
+
+        assertThat(result).hasSize(2);
+    }
+
+    @Test
+    void paging2() {
+        var queryResults = queryFactory
+                .selectFrom(member)
+                .orderBy(member.username.desc())
+                .offset(1)
+                .limit(2)
+                .fetchResults(); // deprecated
+
+        assertThat(queryResults.getTotal()).isEqualTo(4);
+        assertThat(queryResults.getOffset()).isEqualTo(1);
+        assertThat(queryResults.getLimit()).isEqualTo(2);
+        assertThat(queryResults.getResults()).hasSize(2);
+    }
 }
