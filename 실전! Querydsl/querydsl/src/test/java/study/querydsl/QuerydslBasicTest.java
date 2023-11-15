@@ -3,6 +3,7 @@ package study.querydsl;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import static study.querydsl.entity.QTeam.team;
 @SpringBootTest
 @Transactional
 public class QuerydslBasicTest {
+    @Autowired
+    EntityManagerFactory emf;
     @Autowired
     EntityManager em;
 
@@ -324,5 +327,37 @@ public class QuerydslBasicTest {
         for (Tuple tuple : result) {
             System.out.println("tuple = " + tuple);
         }
+    }
+
+    @Test
+    void fetchJoinNo() {
+        em.flush();
+        em.clear();
+
+        var findMember = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("member1"))
+                .fetchOne();
+
+        assertThat(findMember).isNotNull();
+        var loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertThat(loaded).as("페치 조인 미적용").isFalse();
+    }
+
+    @Test
+    void fetchJoinUse() {
+        em.flush();
+        em.clear();
+
+        var findMember = queryFactory
+                .selectFrom(member)
+                .join(member.team, team)
+                .fetchJoin()
+                .where(member.username.eq("member1"))
+                .fetchOne();
+
+        assertThat(findMember).isNotNull();
+        var loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertThat(loaded).as("페치 조인 적용").isTrue();
     }
 }
