@@ -98,4 +98,45 @@ public class QuerydslBasicTest {
         assertThat(findMember.getUsername()).isEqualTo("member1");
         assertThat(findMember.getAge()).isEqualTo(10);
     }
+
+    @Test
+    void resultFetch() {
+        System.out.println("[TEST_OUTPUT] fetch");
+        var fetch = queryFactory
+                .selectFrom(member)
+                .fetch();
+        for (var fetchItem : fetch) {
+            System.out.println("fetchItem = " + fetchItem);
+        }
+
+        System.out.println("[TEST_OUTPUT] fetchOne");
+        var fetchOne = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("member1"))
+                .fetchOne(); // 결과가 2개 이상이면 예외 발생, 없으면 null 반환.
+        System.out.println("fetchOne = " + fetchOne);
+
+        System.out.println("[TEST_OUTPUT] fetchFirst");
+        var fetchFirst = queryFactory
+                .selectFrom(member)
+                .fetchFirst(); // == limit(1).fetchOne()
+        System.out.println("fetchFirst = " + fetchFirst);
+
+        System.out.println("[TEST_OUTPUT] fetchResults (deprecated)");
+        var results = queryFactory
+                .selectFrom(member)
+                .fetchResults(); // deprecated
+        var total = results.getTotal();
+        var members = results.getResults();
+        System.out.println("total = " + total);
+        for (var member : members) {
+            System.out.println("member = " + member);
+        }
+
+        System.out.println("[TEST_OUTPUT] fetchCount (deprecated)");
+        var fetchCount = queryFactory
+                .selectFrom(member)
+                .fetchCount();
+        System.out.println("fetchCount = " + fetchCount);
+    }
 }
