@@ -495,4 +495,33 @@ public class QuerydslBasicTest {
             System.out.println("s = " + s);
         }
     }
+
+    @Test
+    void simpleProjection() {
+        var result = queryFactory
+                .select(member.username)
+                .from(member)
+                .fetch();
+
+        for (var s : result) {
+            System.out.println("s = " + s);
+        }
+    }
+
+    @Test
+    void tupleProjection() {
+        // Tuple 타입은 querydsl 에 종속된 타입
+        // Repository 레이어 밖으로 노출하지 않는 것을 권장
+        var result = queryFactory
+                .select(member.username, member.age)
+                .from(member)
+                .fetch();
+
+        for (var tuple : result) {
+            var username = tuple.get(member.username);
+            var age = tuple.get(member.age);
+            System.out.println("username = " + username);
+            System.out.println("age = " + age);
+        }
+    }
 }
