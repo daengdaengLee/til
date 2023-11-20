@@ -75,4 +75,31 @@ class MemberJpaRepositoryTest {
 
         assertThat(result).extracting("username").containsExactlyInAnyOrder("member4");
     }
+
+    @Test
+    void searchTest2() {
+        var teamA = new Team("teamA");
+        var teamB = new Team("teamB");
+        em.persist(teamA);
+        em.persist(teamB);
+
+        var member1 = new Member("member1", 10, teamA);
+        var member2 = new Member("member2", 20, teamA);
+        em.persist(member1);
+        em.persist(member2);
+
+        var member3 = new Member("member3", 30, teamB);
+        var member4 = new Member("member4", 40, teamB);
+        em.persist(member3);
+        em.persist(member4);
+
+        var memberSearchCondition = new MemberSearchCondition();
+        memberSearchCondition.setAgeGoe(35);
+        memberSearchCondition.setAgeLoe(40);
+        memberSearchCondition.setTeamName("teamB");
+
+        var result = memberJpaRepository.search(memberSearchCondition);
+
+        assertThat(result).extracting("username").containsExactlyInAnyOrder("member4");
+    }
 }
