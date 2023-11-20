@@ -689,4 +689,65 @@ public class QuerydslBasicTest {
         // null 처리 필요
         return usernameEq(username).and(ageEq(age));
     }
+
+    @Test
+    void bulkUpdate() {
+        // 실행 전           영속성 컨텍스트  DB
+        // member1 = 10 -> member1      member1
+        // member2 = 20 -> member2      member2
+        // member3 = 30 -> member3      member3
+        // member4 = 40 -> member4      member4
+
+        // bulk 연산을 수행하면 영속성 컨텍스트 상태와 DB 상태간 불일치 발생할 수 있음
+        var count = queryFactory
+                .update(member)
+                .set(member.username, "비회원")
+                .where(member.age.lt(28))
+                .execute();
+
+        // 실행 후           영속성 컨텍스트  DB
+        // member1 = 10 -> member1      비회원
+        // member2 = 20 -> member2      비회원
+        // member3 = 30 -> member3      member3
+        // member4 = 40 -> member4      member4
+
+        // 영속성 컨텍스트의 값이 우선권을 가진다.
+        var result = queryFactory.selectFrom(member).fetch();
+        for (var member : result) {
+            System.out.println("member = " + member);
+        }
+
+        // 영속성 컨텍스트 초기화
+        // 벌크 연산 후 항상 초기화하는 걸 추천
+        em.flush();
+        em.clear();
+
+        // DB 데이터로 영속성 컨텍스트 새로 채움
+        result = queryFactory.selectFrom(member).fetch();
+        for (var member : result) {
+            System.out.println("member = " + member);
+        }
+
+        assertThat(count).isEqualTo(2);
+    }
+
+    @Test
+    void bulkAdd() {
+        var count = queryFactory
+                .update(member)
+                .set(member.age, member.age.add(1))
+                .execute();
+
+        assertThat(count).isEqualTo(4);
+    }
+
+    @Test
+    void bulkDelete() {
+        var count = queryFactory
+                .delete(member)
+                .where(member.age.gt(18))
+                .execute();
+
+        assertThat(count).isEqualTo(3);
+    }
 }
