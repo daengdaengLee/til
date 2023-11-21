@@ -13,26 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-class MemberRepositoryTest {
+class MemberQueryRepositoryTest {
     @Autowired
     EntityManager em;
     @Autowired
-    MemberRepository memberRepository;
-
-    @Test
-    void basicTest() {
-        var member = new Member("member1", 10);
-        memberRepository.save(member);
-
-        var findMember = memberRepository.findById(member.getId()).orElseThrow();
-        assertThat(findMember).isEqualTo(member);
-
-        var result1 = memberRepository.findAll();
-        assertThat(result1).containsExactlyInAnyOrder(member);
-
-        var result2 = memberRepository.findByUsername("member1");
-        assertThat(result2).containsExactlyInAnyOrder(member);
-    }
+    MemberQueryRepository memberQueryRepository;
 
     @Test
     void searchTest() {
@@ -56,7 +41,7 @@ class MemberRepositoryTest {
         memberSearchCondition.setAgeLoe(40);
         memberSearchCondition.setTeamName("teamB");
 
-        var result = memberRepository.search(memberSearchCondition);
+        var result = memberQueryRepository.search(memberSearchCondition);
 
         assertThat(result).extracting("username").containsExactlyInAnyOrder("member4");
     }
