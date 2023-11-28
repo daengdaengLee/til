@@ -3,6 +3,8 @@ mod systems;
 
 use bevy::prelude::*;
 
+use crate::{game::SimulationState, AppState};
+
 use systems::*;
 
 // #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
@@ -25,7 +27,7 @@ impl Plugin for PlayerPlugin {
             Update,
             PlayerSystemSet::Movement.before(PlayerSystemSet::Confinement),
         )
-        .add_systems(Startup, spawn_player)
+        .add_systems(OnEnter(AppState::Game), spawn_player)
         .add_systems(
             Update,
             (
@@ -33,7 +35,10 @@ impl Plugin for PlayerPlugin {
                 confine_player_movement.in_set(PlayerSystemSet::Confinement),
                 enemy_hit_player,
                 player_hit_star,
-            ),
-        );
+            )
+                .run_if(in_state(AppState::Game))
+                .run_if(in_state(SimulationState::Running)),
+        )
+        .add_systems(OnExit(AppState::Game), despawn_player);
     }
 }
