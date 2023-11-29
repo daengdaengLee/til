@@ -9,13 +9,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppV2Config {
     @Bean
-    public OrderControllerV2 orderControllerV2(OrderServiceV2 orderServiceV2) {
-        return new OrderControllerV2(orderServiceV2);
+    public OrderControllerV2 orderControllerV2() {
+        return new OrderControllerV2(orderServiceV2());
     }
 
     @Bean
-    public OrderServiceV2 orderServiceV2(OrderRepositoryV2 orderRepositoryV2) {
-        return new OrderServiceV2(orderRepositoryV2);
+    public OrderServiceV2 orderServiceV2() {
+        return new OrderServiceV2(orderRepositoryV2());
     }
 
     @Bean
