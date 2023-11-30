@@ -1,3 +1,6 @@
 [submodule "처음 배우는 엘릭서 프로그래밍/programming-elixir-kr"]
 	path = 처음 배우는 엘릭서 프로그래밍/programming-elixir-kr
 	url = git@github.com:walnut-kwon/programming-elixir-kr.git
+[submodule "golang/musthaveGo"]
+	path = golang/musthaveGo
+	url = https://github.com/tuckersGo/musthaveGo
