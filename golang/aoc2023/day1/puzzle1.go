@@ -59,5 +59,6 @@ func SolvePuzzle1() {
 		sum += n
 	}
 
+	fmt.Println("Day1 Puzzle1")
 	fmt.Println("sum=", sum)
 }

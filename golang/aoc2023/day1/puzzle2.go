@@ -47,12 +47,9 @@ func SolvePuzzle2() {
 		last := parseToInt(values[len(values)-1])
 		num := first*10 + last
 		sum += num
-
-		fmt.Println(line)
-		fmt.Println(values)
-		fmt.Println(num)
 	}
 
+	fmt.Println("Day1 Puzzle2")
 	fmt.Println("sum=", sum)
 }
 
