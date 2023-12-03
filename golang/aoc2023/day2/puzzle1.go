@@ -37,56 +37,14 @@ func SolvePuzzle1() {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		game := scanner.Text()
-		maxRed, maxGreen, maxBlue := getMaxCubeCount(game)
-		if maxRed <= RED && maxGreen <= GREEN && maxBlue <= BLUE {
+		red, green, blue := getCubeCount(game)
+		if red <= RED && green <= GREEN && blue <= BLUE {
 			sum += getGameId(game)
 		}
 	}
 
 	fmt.Println("Day2 Puzzle1")
 	fmt.Println("sum=", sum)
-}
-
-func getMaxCubeCount(game string) (int, int, int) {
-	maxRed := 0
-	maxGreen := 0
-	maxBlue := 0
-
-	idx := strings.Index(game, ":")
-	if idx == -1 {
-		panic("invalid game input: " + game)
-	}
-	records := game[idx+2:]
-
-	for _, record := range strings.Split(records, ";") {
-		record = strings.Trim(record, " ")
-		for _, cube := range strings.Split(record, ",") {
-			cube = strings.Trim(cube, " ")
-			split := strings.Split(cube, " ")
-			count, err := strconv.Atoi(split[0])
-			if err != nil {
-				panic("invalid game input: " + game)
-			}
-			color := split[1]
-
-			switch color {
-			case "red":
-				if count > maxRed {
-					maxRed = count
-				}
-			case "green":
-				if count > maxGreen {
-					maxGreen = count
-				}
-			case "blue":
-				if count > maxBlue {
-					maxBlue = count
-				}
-			}
-		}
-	}
-
-	return maxRed, maxGreen, maxBlue
 }
 
 func getGameId(game string) int {
