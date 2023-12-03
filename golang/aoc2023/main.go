@@ -3,6 +3,7 @@ package main
 import (
 	"aoc2023/day1"
 	"aoc2023/day2"
+	"aoc2023/day3"
 	"os"
 	"regexp"
 )
@@ -47,10 +48,18 @@ func main() {
 			day2.SolvePuzzle1()
 			day2.SolvePuzzle2()
 		}
+	case "3":
+		switch puzzleArg {
+		case "1":
+			day3.SolvePuzzle1()
+		default:
+			day3.SolvePuzzle1()
+		}
 	default:
 		day1.SolvePuzzle1()
 		day1.SolvePuzzle2()
 		day2.SolvePuzzle1()
 		day2.SolvePuzzle2()
+		day3.SolvePuzzle1()
 	}
 }
