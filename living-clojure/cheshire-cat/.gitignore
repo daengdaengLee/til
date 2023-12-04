@@ -1,0 +1,16 @@
+/target
+/lib
+/classes
+/checkouts
+pom.xml
+pom.xml.asc
+*.jar
+*.class
+/.lein-*
+/.nrepl-port
+
+#===
+/*.iml
+/resources/public/**/*
+!/resources/public/cat.html
+/out/
