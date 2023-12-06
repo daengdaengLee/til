@@ -12,14 +12,31 @@ func SolvePuzzle2() {
 	almanacMaps := parseAlmanacMaps(lines)
 	lowestLocation := math.MaxInt
 
-	for i, almanacSeed := range almanacSeeds {
-		fmt.Printf("processing %v / %v\n", i+1, len(almanacSeeds))
-		for j := 0; j < almanacSeed.length; j += 1 {
-			seed := almanacSeed.start + j
-			location := mapSeedToLocation(almanacMaps, seed)
-			if location < lowestLocation {
-				lowestLocation = location
+	locationCh := make(chan int)
+	count := 0
+	for _, seed := range almanacSeeds {
+		count += 1
+		fmt.Printf("run %v/%v...\n", count, len(almanacSeeds))
+		go func(locationCh chan<- int, almanacSeed almanacSeed, count int) {
+			fmt.Printf("processing %v/%v...\n", count, len(almanacSeeds))
+			lowestLocation := math.MaxInt
+			for j := 0; j < almanacSeed.length; j += 1 {
+				seed := almanacSeed.start + j
+				location := mapSeedToLocation(almanacMaps, seed)
+				if location < lowestLocation {
+					lowestLocation = location
+				}
 			}
+			locationCh <- lowestLocation
+		}(locationCh, seed, count)
+	}
+
+	for count > 0 {
+		location := <-locationCh
+		count -= 1
+		fmt.Printf("done! remains %v/%v\n", count, len(almanacSeeds))
+		if location < lowestLocation {
+			lowestLocation = location
 		}
 	}
 
