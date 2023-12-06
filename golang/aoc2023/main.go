@@ -85,8 +85,11 @@ func main() {
 		switch puzzleArg {
 		case "1":
 			day6.SolvePuzzle1()
+		case "2":
+			day6.SolvePuzzle2()
 		default:
 			day6.SolvePuzzle1()
+			day6.SolvePuzzle2()
 		}
 	default:
 		day1.SolvePuzzle1()
@@ -100,5 +103,6 @@ func main() {
 		day5.SolvePuzzle1()
 		day5.SolvePuzzle2()
 		day6.SolvePuzzle1()
+		day6.SolvePuzzle2()
 	}
 }
