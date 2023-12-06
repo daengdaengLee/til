@@ -8,7 +8,7 @@ import (
 
 func SolvePuzzle1() {
 	lines := common.ReadFileToLines("day5", "input")
-	seeds := parseSeeds(lines)
+	seeds := parseSeeds1(lines)
 	almanacMaps := parseAlmanacMaps(lines)
 	lowestLocation := math.MaxInt
 

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func parseSeeds(lines []string) []int {
+func parseSeeds1(lines []string) []int {
 	strSeeds := strings.Split(strings.Replace(lines[0], "seeds: ", "", 1), " ")
 	intSeeds := make([]int, len(strSeeds))
 	for i, strSeed := range strSeeds {
@@ -16,6 +16,23 @@ func parseSeeds(lines []string) []int {
 		intSeeds[i] = intSeed
 	}
 	return intSeeds
+}
+
+func parseSeeds2(lines []string) []almanacSeed {
+	tokens := strings.Split(strings.Replace(lines[0], "seeds: ", "", 1), " ")
+	almanacSeeds := make([]almanacSeed, 0, len(tokens)/2)
+	for i := 0; i < len(tokens); i += 2 {
+		start, err := strconv.Atoi(tokens[i])
+		if err != nil {
+			panic(err)
+		}
+		length, err := strconv.Atoi(tokens[i+1])
+		if err != nil {
+			panic(err)
+		}
+		almanacSeeds = append(almanacSeeds, almanacSeed{start: start, length: length})
+	}
+	return almanacSeeds
 }
 
 func parseAlmanacMaps(lines []string) map[string]almanacMap {
