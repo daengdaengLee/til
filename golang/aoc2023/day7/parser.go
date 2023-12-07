@@ -8,12 +8,11 @@ import (
 func parseToHandAndBid(line string) handAndBid {
 	tokens := strings.Split(line, " ")
 	cards := strings.Split(tokens[0], "")
-	handType := calculateHandType(cards)
 	bid, err := strconv.Atoi(tokens[1])
 	if err != nil {
 		panic(err)
 	}
-	return handAndBid{hand: hand{cards: cards, handType: handType}, bid: bid}
+	return handAndBid{hand: cards, bid: bid}
 }
 
 func parseToHandAndBids(lines []string) []handAndBid {

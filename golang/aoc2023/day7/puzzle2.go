@@ -6,15 +6,15 @@ import (
 	"sort"
 )
 
-func SolvePuzzle1() {
+func SolvePuzzle2() {
 	lines := common.ReadFileToLines("day7", "input")
 	handAndBids := parseToHandAndBids(lines)
 	sort.SliceStable(handAndBids, func(i int, j int) bool {
 		handAndBidA := handAndBids[i]
 		handAndBidB := handAndBids[j]
 
-		handTypeA := calculateHandType1(handAndBidA.hand)
-		handTypeB := calculateHandType1(handAndBidB.hand)
+		handTypeA := calculateHandType2(handAndBidA.hand)
+		handTypeB := calculateHandType2(handAndBidB.hand)
 		handTypeCompare := compareHandType(handTypeA, handTypeB)
 		if handTypeCompare < 0 {
 			return true
@@ -25,7 +25,7 @@ func SolvePuzzle1() {
 		cardsCompare := compareCards(
 			handAndBidA.hand,
 			handAndBidB.hand,
-			mapCardToScore1)
+			mapCardToScore2)
 		if cardsCompare < 0 {
 			return true
 		} else if cardsCompare > 0 {
@@ -40,6 +40,6 @@ func SolvePuzzle1() {
 		sum += rank * handAndBid.bid
 	}
 
-	fmt.Println("Day7 Puzzle1")
+	fmt.Println("Day7 Puzzle2")
 	fmt.Println("sum=", sum)
 }
