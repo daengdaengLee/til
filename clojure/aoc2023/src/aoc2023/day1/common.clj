@@ -1,11 +1,11 @@
-(ns aoc2023.day1.common)
+(ns aoc2023.day1.common
+  (:require [aoc2023.common :as common]))
 
 (defn solve-template [parse-line]
-  (with-open [r (clojure.java.io/reader "src/aoc2023/day1/input")]
-    (-> r
-        (line-seq)
-        (#(map parse-line %))
-        (#(reduce + %)))))
+  (-> "src/aoc2023/day1/input"
+      (common/read-file-to-lines)
+      (#(map parse-line %))
+      (#(reduce + %))))
 
 (defn pick-both-end [coll]
   (let [a (first coll)
