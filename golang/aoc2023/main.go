@@ -2,6 +2,7 @@ package main
 
 import (
 	"aoc2023/day1"
+	"aoc2023/day10"
 	"aoc2023/day2"
 	"aoc2023/day3"
 	"aoc2023/day4"
@@ -124,6 +125,16 @@ func main() {
 			day9.SolvePuzzle1()
 			day9.SolvePuzzle2()
 		}
+	case "10":
+		switch puzzleArg {
+		case "1":
+			day10.SolvePuzzle1()
+		case "2":
+			day10.SolvePuzzle2()
+		default:
+			day10.SolvePuzzle1()
+			day10.SolvePuzzle2()
+		}
 	default:
 		day1.SolvePuzzle1()
 		day1.SolvePuzzle2()
@@ -143,5 +154,7 @@ func main() {
 		day8.SolvePuzzle2()
 		day9.SolvePuzzle1()
 		day9.SolvePuzzle2()
+		day10.SolvePuzzle1()
+		day10.SolvePuzzle2()
 	}
 }

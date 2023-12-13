@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func ReadFileToLines(pathElems ...string) []string {
@@ -33,4 +34,14 @@ func ReadFileToLines(pathElems ...string) []string {
 		lines = append(lines, line)
 	}
 	return lines
+}
+
+func ReadFileToSplitLines(pathElems ...string) [][]string {
+	lines := ReadFileToLines(pathElems...)
+	splitLines := make([][]string, len(lines))
+	for i, line := range lines {
+		splitLine := strings.Split(line, "")
+		splitLines[i] = splitLine
+	}
+	return splitLines
 }
