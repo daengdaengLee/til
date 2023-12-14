@@ -5,6 +5,8 @@ import (
 	"aoc2023/day10"
 	day11part1 "aoc2023/day11/part1"
 	day11part2 "aoc2023/day11/part2"
+	day12part1 "aoc2023/day12/part1"
+	day12part2 "aoc2023/day12/part2"
 	"aoc2023/day2"
 	"aoc2023/day3"
 	"aoc2023/day4"
@@ -147,6 +149,16 @@ func main() {
 			day11part1.Solve()
 			day11part2.Solve()
 		}
+	case "12":
+		switch puzzleArg {
+		case "1":
+			day12part1.Solve()
+		case "2":
+			day12part2.Solve()
+		default:
+			day12part1.Solve()
+			day12part2.Solve()
+		}
 	default:
 		day1.SolvePuzzle1()
 		day1.SolvePuzzle2()
@@ -170,5 +182,7 @@ func main() {
 		day10.SolvePuzzle2()
 		day11part1.Solve()
 		day11part2.Solve()
+		day12part1.Solve()
+		day12part2.Solve()
 	}
 }
