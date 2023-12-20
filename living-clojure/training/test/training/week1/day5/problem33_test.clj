@@ -2,7 +2,7 @@
   (:require [clojure.test :refer :all]
             [training.week1.day5.problem33 :refer [solve1 solve2 solve3 solve4 solve5]]))
 
-(deftest solve1-test
+(deftest solve-test
   (testing "Week1 Day5 Problem33 - 1"
     (is (solve1)))
   (testing "Week1 Day5 Problem33 - 2"
