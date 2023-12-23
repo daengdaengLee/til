@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "langchain-quickstart"
+version = "0.1.0"
+description = ""
+authors = ["daengdaengLee <gunho1020@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+langchain = "^0.0.352"
+openai = "^1.6.1"
+python-dotenv = "^1.0.0"
+langserve = {extras = ["all"], version = "^0.0.37"}
+isort = "^5.13.2"
+black = "^23.12.1"
+pydantic = "1.10.13"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
