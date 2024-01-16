@@ -5,13 +5,16 @@
 
 (def row-count (count row))
 
-(defn index-in-row [token]
-  (loop [tokens (seq row)
+(defn index-in-tokens [token tokens]
+  (loop [tokens tokens
          idx 0]
-    (cond
-      (empty? tokens) -1
-      (= (first tokens) token) idx
-      :else (recur (rest tokens) (+ idx 1)))))
+      (cond
+        (empty? tokens) -1
+        (= (first tokens) token) idx
+        :else (recur (rest tokens) (+ idx 1)))))
+
+(defn index-in-row [token]
+  (index-in-tokens token (seq row)))
 
 (defn repeat-chars [s]
   (flatten (repeat (seq s))))
@@ -29,7 +32,14 @@
     (string/join "")))
 
 (defn decode [keyword message]
-  "decodeme")
+  (->>
+    (zip-with-keyword keyword, message)
+    (map (fn [[a b]]
+      (let [dropped-row (drop-row a (seq row))
+            index-in-dropped-row (index-in-tokens b dropped-row )
+            original-token (first (drop index-in-dropped-row (seq row)))]
+        original-token)))
+     (string/join "")))
 
 (defn decipher [cipher message]
   "decypherme")
