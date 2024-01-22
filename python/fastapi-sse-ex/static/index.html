@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FastAPI SSE Ex</title>
+</head>
+<body>
+<button id="btn">콘솔창을 열고 클릭하세요.</button>
+</body>
+<script type="text/javascript">
+    async function runSse() {
+        const response = await fetch('/sse-test', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({n: 10})
+        });
+        const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+        console.log('start stream');
+        let cur = await reader.read();
+        while (!cur.done) {
+            const value = cur.value
+                .split(/data: /)
+                .filter((line) => {
+                    return line.endsWith("\n\n")
+                })
+                .map((line) => {
+                    return line.replace(/\n\n$/, "")
+                })
+                .join("");
+            console.log(value);
+            cur = await reader.read();
+        }
+        console.log("finish stream");
+    }
+
+    const btn = document.querySelector("#btn");
+    btn.addEventListener("click", () => {
+        runSse()
+            .then(() => {
+                console.log("success!!!");
+            })
+            .catch((error) => {
+                console.log("fail!!!");
+                console.error(error);
+            });
+    });
+</script>
+</html>
